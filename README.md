@@ -10,3 +10,4 @@ Created for use in KoreanUnnie's discord chat
 * nextjs
 * echarts
 * socket.io
+* now (deployments)
