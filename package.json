@@ -1,8 +1,8 @@
 {
   "name": "korean-dict-bot",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "korean-dict-bot",
-  "main": "index.js",
+  "main": "next-server.js",
   "scripts": {
     "dev": "node next-server.js",
     "start": "node next-server.js",
