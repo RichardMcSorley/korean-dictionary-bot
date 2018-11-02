@@ -1,0 +1,36 @@
+{
+  "name": "korean-dict-bot",
+  "version": "1.0.2",
+  "description": "korean-dict-bot",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node next-server.js",
+    "start": "node next-server.js",
+    "build": "next build"
+  },
+  "keywords": [
+    "discord",
+    "bot",
+    "korean"
+  ],
+  "author": "Richard McSorley",
+  "license": "MIT",
+  "dependencies": {
+    "discord.js": "^11.2.1",
+    "dotenv": "^6.0.0",
+    "firebase": "^5.3.1",
+    "firebase-admin": "^5.13.1",
+    "hapi": "^17.1.1",
+    "isomorphic-unfetch": "^3.0.0",
+    "moment": "^2.22.2",
+    "muicss": "^0.9.41",
+    "next": "^7.0.2",
+    "node-fetch": "^2.2.0",
+    "react": "^16.6.0",
+    "react-dom": "^16.6.0",
+    "request": "^2.87.0",
+    "request-promise": "^4.2.2",
+    "socket.io": "^1.7.3",
+    "socket.io-client": "^1.7.3"
+  }
+}
