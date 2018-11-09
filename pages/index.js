@@ -72,7 +72,6 @@ class Index extends Component {
                 </Appbar>
                 <Container>
 
-
                     <div id="wordcloud_car"></div>
                     <div className="link-wrapper">
                         <Button color="primary" onClick={() => {if(confirm('Are you sure you want to erase all the data?')){fetch('/reset/terms')}}}>Reset</Button>
@@ -80,9 +79,6 @@ class Index extends Component {
 
                     </div>
                 </Container>
-
-
-
             </main>
         )
     }

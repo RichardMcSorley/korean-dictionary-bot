@@ -17,17 +17,17 @@ export default class MyDocument extends Document {
                     <style>{` 
 
 .mui-btn--primary {
-    background-color: hotpink!important;
+    //background-color: hotpink!important;
 }
                     .mui-appbar {
-                        background-color: hotpink!important;
+                        //background-color: hotpink!important;
                     }
                     body{
-        background: black !important;
+       // background: black !important;
     }
     a{
-        color: white;
-    text-decoration: none;
+       // color: white;
+   // text-decoration: none;
     }`}</style>
                     <meta charSet="utf-8" />
                     <meta name='viewport' content='width=device-width, initial-scale=1, user-scalable=no' />

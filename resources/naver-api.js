@@ -1,4 +1,4 @@
-const constants = require('./constants');
+const constants = require('../utils/constants');
 const fetch = require('node-fetch');
 
 module.exports.getTranslation = async (text) => {

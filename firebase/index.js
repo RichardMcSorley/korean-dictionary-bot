@@ -1,6 +1,8 @@
 const firebase = require('./firebase');
 const db = firebase.database;
-const DBResource = process.env.NODE_ENV === 'development'? `TestKoreanDictionaryTerms` : 'KoreanDictionaryTerms';
+const DBResource = process.env.NODE_ENV === 'development' ? `TestKoreanDictionaryTerms` : 'KoreanDictionaryTerms';
+const videoInfoDBResource = process.env.NODE_ENV === 'development' ? `TestKoreanListeningPracticePlaylistInfo` : 'KoreanListeningPracticePlaylistInfo';
+const videoPlaylistDBResource = process.env.NODE_ENV === 'development' ? `TestKoreanListeningPracticePlaylist` : 'KoreanListeningPracticePlaylist';
 
 module.exports.sendTermToDB = async (term) => {
     const dbRef = await db.ref(`${DBResource}`);
@@ -9,7 +11,7 @@ module.exports.sendTermToDB = async (term) => {
             //already exists, add
             const oldValue = await snapshot.child(term).val().count
             return await dbRef.child(term)
-                .update({count: oldValue + 1});
+                .update({ count: oldValue + 1 });
         } else {
             return await dbRef.child(term)
                 .set({ count: 1 });
@@ -26,5 +28,43 @@ module.exports.getTermsFromDB = async () => {
 module.exports.resetTermsOnDB = async () => {
     const dbRef = db.ref(`${DBResource}`);
     dbRef
-    .set({});
+        .set({});
+}
+
+module.exports.sendVideoInfoToDB = async (videoInfo) => {
+    const dbRef = await db.ref(`${videoInfoDBResource}`);
+    return await dbRef.once('value', async function (snapshot) {
+        return await dbRef.child(videoInfo.videoId)
+            .set(videoInfo);
+    });
+}
+
+module.exports.updateVideoPlaylist = async (playlist) => {
+    const dbRef = await db.ref(`${videoPlaylistDBResource}`);
+    return await dbRef.once('value', async function (snapshot) {
+        return await dbRef
+            .set(playlist);
+    });
+}
+
+module.exports.getVideoInfoFromDB = async (videoInfo) => {
+    const dbRef = await db.ref(`${videoInfoDBResource}`);
+    return await dbRef.once('value', async function (snapshot) {
+        return await dbRef.child(videoInfo.videoId)
+            .set(videoInfo);
+    });
+}
+
+module.exports.getPlaylistFromDB = async () => {
+    const dbRef = await db.ref(`${videoPlaylistDBResource}`);
+    const snapshot = await dbRef.once('value');
+    const value = snapshot.val();
+    return value;
+}
+
+module.exports.getPlaylistInfoFromDB = async () => {
+    const dbRef = await db.ref(`${videoInfoDBResource}`);
+    const snapshot = await dbRef.once('value');
+    const value = snapshot.val();
+    return value;
 }
