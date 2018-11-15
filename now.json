@@ -1,5 +1,5 @@
 {
-    "version":1,
+    "version": 1,
     "scale": {
         "sfo1": {
             "min": 1,
@@ -23,7 +23,9 @@
         "F_auth_provider_x509_cert_url": "@kdf_auth_provider_x509_cert_url",
         "F_client_x509_cert_url": "@kdf_client_x509_cert_url",
         "youtube_api_key": "@youtube-api-key",
-        "INITIAL_VOICE_CHANNEL": "@kd_initial_voice_channel"
+        "INITIAL_VOICE_CHANNEL": "@kd_initial_voice_channel",
+        "YOUTUBE_DISCORD_CHANNEL": "461385555842826240",
+        "LIVE_STREAM_SERVER":"@live-stream-server"
     },
     "alias": "korean-dict-bot.dongdongchat.com"
 }

@@ -6,12 +6,12 @@ const routes = require('./routes');
 const port = parseInt(process.env.PORT, 10) || 3000
 const dev = process.env.NODE_ENV !== 'production'
 const app = next({ dev })
-const firebase = require('./firebase/index');
 const server = new Hapi.Server({
   port
 })
 const io = require('socket.io')(server.listener);
 module.exports.io = io;
+
 require('./webhooks');
 app
   .prepare()
@@ -21,6 +21,7 @@ app
       method: 'GET',
       path: '/reset/terms',
       handler: async function () {
+        const firebase = require('./firebase/index');
         //Reset Terms
         firebase.resetTermsOnDB();
         io.emit("newTerm");

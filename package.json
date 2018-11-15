@@ -17,6 +17,7 @@
   "author": "Richard McSorley",
   "license": "MIT",
   "dependencies": {
+    "body-parser": "^1.18.3",
     "discord.js": "^11.2.1",
     "dotenv": "^6.0.0",
     "ffmpeg": "0.0.4",
@@ -30,6 +31,7 @@
     "muicss": "^0.9.41",
     "next": "^7.0.2",
     "node-fetch": "^2.2.0",
+    "numeral": "^2.0.6",
     "opusscript": "0.0.6",
     "react": "^16.6.0",
     "react-dom": "^16.6.0",
