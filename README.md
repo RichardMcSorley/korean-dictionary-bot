@@ -16,6 +16,5 @@ Looks up words using Naver API. Dashboard to manage some pieces of functionality
 - ffmpeg
 - ziet now
 
-
-Dependant on https://github.com/RichardMcSorley/youtube-cron-job
-and https://github.com/RichardMcSorley/youtube-puppeteer
+Dependant on [youtube-cron-job](https://github.com/RichardMcSorley/youtube-cron-job)
+and [youtube-puppeteer](https://github.com/RichardMcSorley/youtube-puppeteer) for youtube live streaming functionality
