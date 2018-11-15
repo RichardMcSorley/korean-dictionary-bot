@@ -14,21 +14,7 @@ export default class MyDocument extends Document {
         return (
             <html>
                 <Head>
-                    <style>{` 
-
-.mui-btn--primary {
-    background-color: hotpink!important;
-}
-                    .mui-appbar {
-                        background-color: hotpink!important;
-                    }
-                    body{
-        background: black !important;
-    }
-    a{
-        color: white;
-    text-decoration: none;
-    }`}</style>
+                    <style>{``}</style>
                     <meta charSet="utf-8" />
                     <meta name='viewport' content='width=device-width, initial-scale=1, user-scalable=no' />
                     <link href="//cdn.muicss.com/mui-0.9.41/css/mui.css" rel="stylesheet" type="text/css" />

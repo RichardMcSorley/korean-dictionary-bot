@@ -1,4 +1,4 @@
-const constants = require('./constants');
+const constants = require('../utils/constants');
 const fetch = require('node-fetch');
 
 module.exports.getTranslation = async (text) => {
@@ -8,7 +8,7 @@ module.exports.getTranslation = async (text) => {
         const response = await fetch(url);
         const json = await response.json();
         if (json.items && json.items[0] && json.items[0].length > 0) {
-            let items = json.items[0];
+            let items = json.items[0]; 
             return items;
         } else {
             return null

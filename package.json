@@ -2,11 +2,12 @@
   "name": "korean-dict-bot",
   "version": "1.0.3",
   "description": "korean-dict-bot",
-  "main": "next-server.js",
+  "main": "index.js",
   "scripts": {
     "dev": "node next-server.js",
     "start": "node next-server.js",
-    "build": "next build"
+    "build": "next build",
+    "bot": "node discord-server.js"
   },
   "keywords": [
     "discord",
@@ -16,21 +17,29 @@
   "author": "Richard McSorley",
   "license": "MIT",
   "dependencies": {
+    "body-parser": "^1.18.3",
     "discord.js": "^11.2.1",
     "dotenv": "^6.0.0",
+    "ffmpeg": "0.0.4",
+    "ffmpeg-binaries": "^4.0.0",
     "firebase": "^5.3.1",
     "firebase-admin": "^5.13.1",
+    "get-youtube-id": "^1.0.0",
     "hapi": "^17.1.1",
     "isomorphic-unfetch": "^3.0.0",
     "moment": "^2.22.2",
     "muicss": "^0.9.41",
     "next": "^7.0.2",
     "node-fetch": "^2.2.0",
+    "numeral": "^2.0.6",
+    "opusscript": "0.0.6",
     "react": "^16.6.0",
     "react-dom": "^16.6.0",
-    "request": "^2.87.0",
+    "request": "^2.88.0",
     "request-promise": "^4.2.2",
     "socket.io": "^1.7.3",
-    "socket.io-client": "^1.7.3"
+    "socket.io-client": "^1.7.3",
+    "youtube-info": "^1.3.1",
+    "ytdl-core": "^0.27.1"
   }
 }

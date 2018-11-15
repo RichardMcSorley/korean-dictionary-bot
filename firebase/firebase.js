@@ -7,9 +7,9 @@ const config = {
   databaseURL: process.env.FIREBASE_DATABASE_URL
 };
 
-firebase.initializeApp(config);
+admin.initializeApp(config);
 
-const database = firebase.database();
+const database = admin.database();
 
 exports.firebase = firebase;
 exports.database = database;

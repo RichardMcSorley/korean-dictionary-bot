@@ -26,7 +26,7 @@ const word_cloud = async ()=>{
         const keywords = await getTerms.json();
 
     
-        var wordcloud_car_color = keywords.map((i, index)=>rainbow(keywords.length, index));
+        var wordcloud_car_color = ['#99AAB5', '#FFFFFF', '#7289DA', '#839496', '#586e75', '#859900', '#2aa198', ' #268bd2', '#b58900', '#cb4b16', '#dc322f']
     
         var option = {
             title:{
@@ -44,7 +44,7 @@ const word_cloud = async ()=>{
                 rotationRange: [-90, 90],
                 rotationStep: 90,
                 gridSize: 2,
-                shape: 'circle',
+                shape: 'pentagon',
                 left: 'center',
                 top: 'center',
                 drawOutOfBound: false,

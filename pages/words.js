@@ -1,14 +1,7 @@
 import { Component } from 'react'
 import fetch from 'isomorphic-unfetch'
-import Appbar from 'muicss/lib/react/appbar';
-import Button from 'muicss/lib/react/button';
-import Container from 'muicss/lib/react/container';
 let wordCloud = () => { };
-let s1 = { verticalAlign: 'middle' };
-let s2 = { textAlign: 'right' };
-
 if (typeof window !== 'undefined') { wordCloud = window.word_cloud }
-
 class Index extends Component {
 
     state = {
@@ -47,38 +40,18 @@ class Index extends Component {
         this.props.socket.off('newTerm', console.log('disconnected'))
     }
 
-
-
     render() {
         return (
             <main>
-                                <style>{`
-        #wordcloud_car{
-            height: 600px;
+                <style>{`
+        body{
+            background-color:#36393f;
         }
-        .link-wrapper{
-            display: flex;
-            justify-content: space-around;
-        }`}</style>
-                <Appbar>
-                    <table width="100%">
-                        <tbody>
-                            <tr style={s1}>
-                                <td className="mui--appbar-height" style={{paddingLeft: 15, fontWeight: 'bold'}}>{this.state.name} v{this.state.version}</td>
-                                <td className="mui--appbar-height" style={s2}></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </Appbar>
-                <Container>
-
+        #wordcloud_car{
+            height: 500px;
+        }
+        `}</style>
                     <div id="wordcloud_car"></div>
-                    <div className="link-wrapper">
-                        <Button color="primary" onClick={() => {if(confirm('Are you sure you want to erase all the data?')){fetch('/reset/terms')}}}>Reset</Button>
-                        <Button color="primary" onClick={() => wordCloud()}>Refresh</Button>
-
-                    </div>
-                </Container>
             </main>
         )
     }
