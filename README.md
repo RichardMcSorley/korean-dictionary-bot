@@ -15,3 +15,7 @@ Looks up words using Naver API. Dashboard to manage some pieces of functionality
 - socket.io
 - ffmpeg
 - ziet now
+
+
+Dependant on https://github.com/RichardMcSorley/youtube-cron-job
+and https://github.com/RichardMcSorley/youtube-puppeteer
