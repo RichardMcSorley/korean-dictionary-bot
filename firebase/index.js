@@ -59,11 +59,14 @@ const connectToStream = videoId => {
     .then(json => {
       console.log("response from connection", json);
       if (json.isLoggedIn) {
-        fetch(process.env.LIVE_STREAM_SERVER + "/live/message", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message: "🤖 SUCCESSFULLY CONNECTED 📚" })
-        })
+        fetch(
+          process.env.LIVE_STREAM_SERVER + "/live/" + videoId + "/message",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ message: "🤖 SUCCESSFULLY CONNECTED 📚" })
+          }
+        )
           .then(res => res.json())
           .then(json => {
             console.log("response from send message", json);
