@@ -40,13 +40,13 @@ db.ref(youtubeSubscriptionDBResource + "/videos")
     const video = childSnapshot.val();
     if (
       video.publishedAt &&
-      moment(video.timestamp).isBetween(
-        moment().subtract(5, "minutes"),
+      moment(video.publishedAt, "YYYY-MM-DDThh:mm:ss.sZ").isBetween(
+        moment().subtract(1, "hour"),
         moment()
       )
     ) {
       if (video.liveBroadcastContent === "live") {
-        console.log("attempting to connect to lives ");
+        console.log("attempting to connect to live ");
         connectToStream(video.videoId);
       }
       const io = require("../next-server").io;
