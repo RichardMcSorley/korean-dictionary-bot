@@ -41,7 +41,7 @@ db.ref(youtubeSubscriptionDBResource + "/videos")
     if (
       video.publishedAt &&
       moment(video.publishedAt, "YYYY-MM-DDThh:mm:ss.sZ").isBetween(
-        moment().subtract(1, "hour"),
+        moment().subtract(30, "minutes"),
         moment()
       )
     ) {
