@@ -1,6 +1,7 @@
 const firebase = require("./firebase");
 const fetch = require("node-fetch");
 const db = firebase.database;
+module.exports.db = db;
 
 const DBResource =
   process.env.NODE_ENV === "development"
@@ -19,67 +20,6 @@ const youtubeSubscriptionDBResource =
     ? `TestKoreanUnnieVideos`
     : "KoreanUnnieVideos";
 
-const livechatDBResource =
-  process.env.NODE_ENV === "development" ? `livechat` : "livechat";
-const moment = require("moment");
-
-db.ref(livechatDBResource)
-  .endAt()
-  .limitToLast(1)
-  .on("child_added", childSnapshot => {
-    const msg = childSnapshot.val();
-    if (msg.author !== "Nightbot" && msg.author !== "Korean Dictionary *") {
-      const io = require("../next-server").io;
-      io.emit("NEW_YOUTUBE_LIVE_MESSAGE", msg);
-    }
-  });
-db.ref(youtubeSubscriptionDBResource + "/videos")
-  .endAt()
-  .limitToLast(1)
-  .on("child_added", childSnapshot => {
-    const video = childSnapshot.val();
-    if (
-      video.publishedAt &&
-      moment(video.publishedAt, "YYYY-MM-DDThh:mm:ss.sZ").isBetween(
-        moment().subtract(30, "minutes"),
-        moment()
-      )
-    ) {
-      if (video.liveBroadcastContent === "live") {
-        console.log("attempting to connect to live ");
-        connectToStream(video.videoId);
-      }
-      const io = require("../next-server").io;
-      io.emit("NEW_VIDEO", video);
-    }
-  });
-const connectToStream = videoId => {
-  fetch(process.env.LIVE_STREAM_SERVER + "/live/" + videoId, { method: "POST" })
-    .then(res => res.json())
-    .then(json => {
-      console.log("response from connection", json);
-      if (json.isLoggedIn) {
-        fetch(
-          process.env.LIVE_STREAM_SERVER + "/live/" + videoId + "/message",
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ message: "🤖 SUCCESSFULLY CONNECTED 📚" })
-          }
-        )
-          .then(res => res.json())
-          .then(json => {
-            console.log("response from send message", json);
-            if (json.message === "🤖 SUCCESSFULLY CONNECTED 📚") {
-              console.log(
-                "Bot should be connected to live stream, https://youtube.com/watch?v=" +
-                  videoId
-              );
-            }
-          });
-      }
-    });
-};
 module.exports.sendTermToDB = async term => {
   const dbRef = await db.ref(`${DBResource}`);
   return await dbRef.once("value", async function(snapshot) {
