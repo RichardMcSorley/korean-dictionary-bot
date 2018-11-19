@@ -1,5 +1,5 @@
 const util = require("util");
-const handle = ({ message, options, prefix }) => {
+const handle = ({ message, options, prefix, bot }) => {
   const usedPrefix = prefix.prefix[prefix.name];
   const prefixIndex = message.content.indexOf(usedPrefix.value);
   const msg = message.content.slice(prefixIndex + usedPrefix.value.length); // slice of the prefix on the message
@@ -17,11 +17,11 @@ const handle = ({ message, options, prefix }) => {
   ) {
     // < checks the message author's id to owners
     const code = args.join(" ");
-    return evalCmd(message, code);
+    return evalCmd({ message, code, bot, options, prefix });
   }
 };
 
-function evalCmd(message, code) {
+function evalCmd({ message, code, bot, options, prefix }) {
   if (message.author.id !== process.env.KOREAN_DICT_BOT_DISCORD_OWNER) return;
   try {
     let evaled = eval(code);
@@ -52,7 +52,8 @@ module.exports = {
     "!admin": {
       match: "admin",
       value: "!admin ",
-      lang: "en"
+      lang: "en",
+      display: false
     }
   }
 };

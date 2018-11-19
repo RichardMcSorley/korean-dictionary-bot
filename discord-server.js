@@ -34,7 +34,7 @@ broadcastState.broadcast.on("unsubscribe", dispatcher => {
   console.log("Channel unsubscribed from broadcast :(");
 });
 
-broadcastState.broadcast.on("end", () => playNextSong());
+broadcastState.broadcast.on("end", () => bot.playNextSong());
 broadcastState.broadcast.on("error", () => {
   broadcastState.broadcast.destroy();
   broadcastState.broadcast = bot.createVoiceBroadcast();
@@ -52,7 +52,7 @@ bot.fire = action => {
         stdio: ["ignore"]
       });
       subprocess.unref();
-      fire("shutdown"); // close this process
+      bot.fire("shutdown"); // close this process
       return "restarting";
     case "shutdown":
       process.exit();
@@ -72,6 +72,7 @@ bot.fire = action => {
       return "please provide an action";
   }
 };
+bot.run = bot.fire; // sometimes I forget which one ;)
 
 bot.prepareKLPChannel = () => {
   bot.playNextSong();
@@ -150,7 +151,11 @@ loadFiles({ path: "./commands/" }, ({ library }) => {
   const possibleCommands = Object.keys(library.prefix);
   // add all prefixes of each command
   possibleCommands.forEach(prefix => {
-    bot.commands.set(prefix, { ...library, name: prefix });
+    bot.commands.set(prefix, {
+      ...library,
+      name: prefix,
+      ...library.prefix[prefix]
+    });
   });
 });
 loadFiles({ path: "./events/discord.socket.io/" }, ({ library }) => {
@@ -161,6 +166,5 @@ loadFiles({ path: "./events/discord.bot/" }, ({ library }) => {
   bot.on(library.name, message => library.handle({ message, bot, db }));
 });
 loadFiles({ path: "./events/firebase/" }, ({ library }) => {
-  // bot.selfEVENTS.set(library.name, library);
   library.ref.on(library.name, message => library.handle({ message, bot, db }));
 });

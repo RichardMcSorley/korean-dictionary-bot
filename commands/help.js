@@ -3,7 +3,10 @@ const handle = ({ message, options, bot }) => {
   let commandString = "";
   bot.commands
     .array()
-    .filter(({ name }) => name !== "!admin")
+    .filter(
+      ({ display, lang }) =>
+        display === true || (display === "lang" && message.lang === lang)
+    )
     .forEach(({ name }) => {
       commandString += ` ${name} `;
     });
@@ -11,9 +14,8 @@ const handle = ({ message, options, bot }) => {
   if (message.channel.type === "youtube") {
     return message.channel.send("Available commands:" + commandString);
   }
-  options.setTitle("Here are all the my commands:");
-  options.setDescription(constants.HELPER_TEXT);
-  return message.channel.send("Available commands:" + commandString);
+  options.setDescription("Available commands:" + commandString);
+  return message.channel.send(options);
 };
 
 module.exports = {
@@ -22,17 +24,20 @@ module.exports = {
     "!help": {
       match: "help",
       value: "!help ",
-      lang: "en"
+      lang: "en",
+      display: false
     },
     "!command": {
       match: "help",
       value: "!command ",
-      lang: "en"
+      lang: "en",
+      display: false
     },
     "!commands": {
       match: "help",
       value: "!commands ",
-      lang: "en"
+      lang: "en",
+      display: false
     }
   }
 };

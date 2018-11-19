@@ -56,12 +56,14 @@ module.exports = {
     "!define": {
       match: "define", // used to match type, useful if we have multiple for same function
       value: "!define ", // what the user typed
-      lang: "en" // maybe use to respond in another language
+      lang: "en", // maybe use to respond in another language,
+      display: "lang"
     },
     "!정의": {
       match: "define",
       value: "!정의 ",
-      lang: "ko"
+      lang: "ko",
+      display: "lang"
     }
   }
 };

@@ -14,13 +14,15 @@ module.exports = {
       match: "ggami",
       description: "What are you doing, Ggami?",
       value: "!ggami ",
-      lang: "en"
+      lang: "en",
+      display: "lang"
     },
     "!까미": {
       match: "ggami",
       value: "!까미 ",
       description: "까미~ 뭐해?",
-      lang: "ko"
+      lang: "ko",
+      display: "lang"
     }
   }
 };
