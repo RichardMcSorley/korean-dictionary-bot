@@ -2,6 +2,7 @@ const io = require("../../next-server").io;
 const db = require("../../firebase");
 const constants = require("../../utils/constants");
 const { hasKoreanTXT } = require("../../utils/language");
+const helpHandle = require("../../commands/help");
 const handle = async ({ message, bot }) => {
   // on message event
   if (message.author.bot || message.system) {
@@ -20,11 +21,11 @@ const handle = async ({ message, bot }) => {
   }
   if (isDM(message, bot)) {
     // Catch DM
-    return messageHasDM(message, options);
+    return messageHasDM(message, options, bot);
   }
   if (isMention(message, bot)) {
     // Catch @Mentions
-    return messageHasMention(message, options);
+    return messageHasMention(message, options, bot);
   }
   let underscore = message.content.toLowerCase().split(" ");
   underscore.forEach((word, index) => {
@@ -67,14 +68,12 @@ const isMention = (message, bot) => {
   }
 };
 
-const messageHasDM = (message, options) => {
-  options.setDescription(constants.HELPER_TEXT);
-  return message.channel.send(options);
+const messageHasDM = (message, options, bot) => {
+  return helpHandle.handle({ message, options, bot });
 };
 
-const messageHasMention = (message, options) => {
-  options.setDescription(constants.HELPER_TEXT);
-  return message.channel.send(options);
+const messageHasMention = (message, options, bot) => {
+  return helpHandle.handle({ message, options, bot });
 };
 
 module.exports = {

@@ -37,5 +37,9 @@ module.exports = {
       lang: "en",
       display: true
     }
-  }
+  },
+  usage: "!keyboard [text]",
+  description: "Know where the keys are for Korean but can't type? Use this!",
+  exampleUsage: "!keyboard dkssud",
+  exampleResult: "Result: 안녕"
 };

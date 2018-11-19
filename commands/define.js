@@ -2,6 +2,9 @@ const naverAPI = require("../resources/naver-api");
 const constants = require("../utils/constants");
 const format = require("../utils/format-text");
 const handle = async ({ message, options, prefix, db, io }) => {
+  options.setThumbnail(
+    "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/155/books_1f4da.png"
+  );
   const usedPrefix = prefix.prefix[prefix.name];
   const prefixIndex = message.content.indexOf(usedPrefix.value);
   const msg = message.content.slice(prefixIndex + usedPrefix.value.length); // slice of the prefix on the message
@@ -65,5 +68,9 @@ module.exports = {
       lang: "ko",
       display: "lang"
     }
-  }
+  },
+  usage: "!define [word]",
+  description: "Korean Dictionary lookup",
+  exampleUsage: "!define hello",
+  exampleResult: "Result: Hello = 안녕하세요"
 };

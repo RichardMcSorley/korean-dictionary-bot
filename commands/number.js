@@ -19,7 +19,7 @@ const handle = ({ message, options, bot, prefix }) => {
   if (message.lang === "ko") {
     const englishNbr = koreanToNumber.parse(msg);
     string = `In English **${msg}** - ${kpop.romanize(
-      msg.replace(/\d/, "")
+      msg.replace(/\d/g, "")
     )} is **${numeral(englishNbr).format("0,0")}**`;
   } else {
     const koreanNbr = numberToKorean(msg);
@@ -44,5 +44,9 @@ module.exports = {
       lang: "en",
       display: true
     }
-  }
+  },
+  usage: "!number [number]",
+  description: "Translate a number from Korean, or into Korean",
+  exampleUsage: "!number 300",
+  exampleResult: "In Korean 300 is 3백 - baeg"
 };

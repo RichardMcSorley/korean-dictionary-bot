@@ -7,7 +7,8 @@ const handle = ({ message, options, bot, prefix }) => {
   const msg = message.content.slice(prefixIndex + usedPrefix.value.length); // slice of the prefix on the message
   const hasKOTXT = hasKoreanTXT(msg);
   let string;
-  if (hasNumber) {
+  if (hasNumber(msg)) {
+    console.log("has number");
     message.lang = hasKOTXT ? "ko" : "en";
     return numberHandle.handle({ message, options, bot, prefix });
   }
@@ -33,7 +34,14 @@ module.exports = {
       match: "hangul",
       value: "!hangul ",
       lang: "en",
-      display: "lang"
+      display: false
+    },
+    "!romanize": {
+      match: "romanize",
+      value: "!romanize ",
+      lang: "en",
+      display: "lang",
+      usage: "!romanize [english|korean]"
     },
     "!hungulify": {
       match: "hungulify",
@@ -47,5 +55,9 @@ module.exports = {
       lang: "ko",
       display: "lang"
     }
-  }
+  },
+  usage: "!hungulify [english|korean]",
+  description: "Romanize or Hangulify text.",
+  exampleUsage: "!hungulify haha",
+  exampleResult: "Hungulified that's 하하"
 };

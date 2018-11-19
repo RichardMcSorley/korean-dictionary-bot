@@ -14,13 +14,13 @@ const handle = ({ message, options, bot, prefix }) => {
   if (containsMale(msg)) {
     const name = namer.generate(false);
     const lastname = name.substring(0, 1);
-    const firstname = name.substring(-2);
+    const firstname = name.slice(-2);
     const romanized = titleCase(kpop.romanize(firstname + " " + lastname));
     string = `${preString} ${name} - ${romanized}? ${sufString}`;
   } else if (containsFemale(msg)) {
     const name = namer.generate(false);
     const lastname = name.substring(0, 1);
-    const firstname = name.substring(-2);
+    const firstname = name.slice(-2);
     const romanized = titleCase(kpop.romanize(firstname + " " + lastname));
     string = `${preString} ${name} - ${romanized}? ${sufString}`;
   }
@@ -62,5 +62,9 @@ module.exports = {
       lang: "en",
       display: false
     }
-  }
+  },
+  usage: "!name [gender]",
+  description: "Get a random Korean name",
+  exampleUsage: "!name female",
+  exampleResult: "How about  남다리 - Dali Nam?  :smiley:"
 };
