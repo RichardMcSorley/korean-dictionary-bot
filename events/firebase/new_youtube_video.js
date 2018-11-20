@@ -12,7 +12,6 @@ const queue = new Queue(
   db.ref(youtubeSubscriptionDBResource),
   { sanitize: false, suppressStack: true },
   (video, progress, resolve, reject) => {
-    console.log(video);
     if (
       moment(video.publishedAt, "YYYY-MM-DDThh:mm:ss.sZ").isBetween(
         moment().subtract(30, "minutes"),
