@@ -26,6 +26,7 @@
     "firebase-admin": "^5.13.1",
     "get-youtube-id": "^1.0.0",
     "gksdud": "^1.0.0",
+    "hanspell": "^0.6.5",
     "hapi": "^17.1.1",
     "isomorphic-unfetch": "^3.0.0",
     "korean-name-generator": "^1.0.2",
@@ -45,6 +46,8 @@
     "request-promise": "^4.2.2",
     "socket.io": "^1.7.3",
     "socket.io-client": "^1.7.3",
+    "underscore": "^1.9.1",
+    "universal-conjugator": "^2.0.5",
     "youtube-info": "^1.3.1",
     "ytdl-core": "^0.27.1"
   }

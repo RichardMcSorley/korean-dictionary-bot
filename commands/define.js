@@ -2,6 +2,9 @@ const naverAPI = require("../resources/naver-api");
 const constants = require("../utils/constants");
 const format = require("../utils/format-text");
 const handle = async ({ message, options, prefix, db, io }) => {
+  const errorTxt = `\nExample: \`\`\`${
+    module.exports.exampleUsage
+  }\`\`\` \nResult: \`\`\`${module.exports.exampleResult}\`\`\``;
   options.setThumbnail(
     "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/155/books_1f4da.png"
   );
@@ -11,8 +14,7 @@ const handle = async ({ message, options, prefix, db, io }) => {
   let args = msg.split(" "); // break the message into part by spaces
   const cmd = args[0].toLowerCase(); // set the first word as the command in lowercase just in case
   if (msg === "") {
-    const description =
-      "To search a word, type ```!define apple``` as an example.";
+    const description = "Please enter a word" + errorTxt;
     if (message.channel.type === "youtube") {
       return message.channel.send(description);
     }

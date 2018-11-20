@@ -2,14 +2,16 @@ const { numberToKorean } = require("number-to-korean");
 const kpop = require("kpop");
 const koreanToNumber = require("korean-numbers");
 var numeral = require("numeral");
-const errorTxt = "\nEX: ```!number 3000```";
 const handle = ({ message, options, bot, prefix }) => {
+  const errorTxt = `\nExample: \`\`\`${
+    module.exports.exampleUsage
+  }\`\`\` \nResult: \`\`\`${module.exports.exampleResult}\`\`\``;
   const usedPrefix = prefix.prefix[prefix.name];
   const prefixIndex = message.content.indexOf(usedPrefix.value);
   const msg = message.content.slice(prefixIndex + usedPrefix.value.length); // slice of the prefix on the message
   let string = "";
   if (msg === "") {
-    string = "Sorry you have to type something." + errorTxt;
+    string = "Sorry you have to provide a number." + errorTxt;
     if (message.channel.type === "youtube") {
       return message.channel.send(string);
     }

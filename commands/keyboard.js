@@ -1,6 +1,8 @@
 const keyboard = require("gksdud");
-const errorTxt = "\nEX: ```!keyboard dkssud```";
 const handle = ({ message, options, bot, prefix }) => {
+  const errorTxt = `\nExample: \`\`\`${
+    module.exports.exampleUsage
+  }\`\`\` \nResult: \`\`\`${module.exports.exampleResult}\`\`\``;
   const usedPrefix = prefix.prefix[prefix.name];
   const prefixIndex = message.content.indexOf(usedPrefix.value);
   const msg = message.content.slice(prefixIndex + usedPrefix.value.length); // slice of the prefix on the message

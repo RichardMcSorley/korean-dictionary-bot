@@ -4,11 +4,15 @@ const sufString = " :smiley:";
 const kpop = require("kpop");
 const { titleCase } = require("../utils/format-text");
 const handle = ({ message, options, bot, prefix }) => {
+  const errorTxt = `\nExample: \`\`\`${
+    module.exports.exampleUsage
+  }\`\`\` \nResult: \`\`\`${module.exports.exampleResult}\`\`\``;
   const msg = message.content.toLowerCase(); // dont slice just search whole text
   let string = "";
   if (!containsMale(msg) && !containsFemale(msg)) {
     return message.channel.send(
-      "Please let me know your gender so I can give you a Korean name :wink: \nEX:```!name male|female```"
+      "Please let me know your gender so I can give you a Korean name " +
+        errorTxt
     );
   }
   if (containsMale(msg)) {
@@ -66,5 +70,5 @@ module.exports = {
   usage: "!name [gender]",
   description: "Get a random Korean name",
   exampleUsage: "!name female",
-  exampleResult: "How about  남다리 - Dali Nam?  :smiley:"
+  exampleResult: "How about  남다리 - Dali Nam?  ^^"
 };

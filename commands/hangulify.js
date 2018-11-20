@@ -2,11 +2,23 @@ const kpop = require("kpop");
 const { hasKoreanTXT } = require("../utils/language");
 const numberHandle = require("./number");
 const handle = ({ message, options, bot, prefix }) => {
+  const errorTxt = `\nExample: \`\`\`${
+    module.exports.exampleUsage
+  }\`\`\` \nResult: \`\`\`${module.exports.exampleResult}\`\`\``;
   const usedPrefix = prefix.prefix[prefix.name];
   const prefixIndex = message.content.indexOf(usedPrefix.value);
   const msg = message.content.slice(prefixIndex + usedPrefix.value.length); // slice of the prefix on the message
   const hasKOTXT = hasKoreanTXT(msg);
   let string;
+  if (msg === "") {
+    const description = "Please enter a word" + errorTxt;
+    if (message.channel.type === "youtube") {
+      return message.channel.send(description);
+    }
+    options.setDescription(description);
+    message.channel.send(options);
+    return;
+  }
   if (hasNumber(msg)) {
     console.log("has number");
     message.lang = hasKOTXT ? "ko" : "en";

@@ -1,13 +1,15 @@
-const errorTxt = "\nEX: ```!translate Hello!```";
 const naverURL = "https://openapi.naver.com/v1/papago/n2mt";
 const fetch = require("node-fetch");
 const handle = async ({ message, options, bot, prefix }) => {
+  const errorTxt = `\nExample: \`\`\`${
+    module.exports.exampleUsage
+  }\`\`\` \nResult: \`\`\`${module.exports.exampleResult}\`\`\``;
   const usedPrefix = prefix.prefix[prefix.name];
   const prefixIndex = message.content.indexOf(usedPrefix.value);
   const msg = message.content.slice(prefixIndex + usedPrefix.value.length); // slice of the prefix on the message
   let string = "";
   if (msg === "") {
-    string = "Sorry you have to type something." + errorTxt;
+    string = "Sorry you have to provide a word or phrase." + errorTxt;
     if (message.channel.type === "youtube") {
       return message.channel.send(string);
     }

@@ -90,7 +90,7 @@ bot.connectToBroadcast = channel => {
       connection.on("error", err => {
         console.log("error with voice channel");
         connection.disconnect();
-        connectToBroadcast(channel);
+        bot.connectToBroadcast(channel);
       });
     })
     .catch(err => console.log("could not join audio channel"));
@@ -137,10 +137,10 @@ bot.pauseBroadcast = () => {
     }
   });
   if (totalMembers === 0 && !broadcastState.paused) {
-    fire("pause");
+    bot.fire("pause");
     console.log("Pausing broadcast", total, "users connected");
   } else if (totalMembers > 0 && broadcastState.paused) {
-    fire("resume");
+    bot.fire("resume");
     console.log("Resuming broadcast", total, "users connected");
   }
 };

@@ -1,4 +1,3 @@
-const { APP_AVATAR } = require("../utils/constants");
 const handle = ({ message, options, bot }) => {
   options.setThumbnail(
     "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/155/books_1f4da.png"
