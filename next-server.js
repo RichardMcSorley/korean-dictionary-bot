@@ -2,6 +2,8 @@ if (process.env.NODE_ENV !== "production") {
   require("dotenv").config();
 }
 const package = require("./package.json");
+const liveQ = require("./events/firebase/new_live_chat_message").queue;
+const videoQ = require("./events/firebase/new_youtube_video").queue;
 const next = require("next");
 const Hapi = require("hapi");
 const routes = require("./routes");
@@ -48,4 +50,13 @@ process.on("uncaughtException", err => {
 process.on("unhandledRejection", err => {
   console.error("Uncaught Promise Error: ", err);
   // process.exit(1); //Eh, should be fine, but maybe handle this?
+});
+process.on("SIGINT", function() {
+  console.log("Starting queue shutdown");
+  liveQ.shutdown().then(function() {
+    videoQ.shutdown().then(function() {
+      console.log("shutdown all Queues");
+      process.exit(0);
+    });
+  });
 });

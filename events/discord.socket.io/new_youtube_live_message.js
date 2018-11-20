@@ -1,7 +1,7 @@
-const { sendMessage } = require("../../resources/puppet-api");
+const { sendLiveMessageToDB } = require("../../firebase");
 const handle = ({ message, bot }) => {
   message.channel = {
-    send: msg => sendToYoutube(msg, message),
+    send: msg => sendToYoutube({ message, payload: msg }),
     type: "youtube"
   };
   message.delete = () => {};
@@ -11,19 +11,30 @@ const handle = ({ message, bot }) => {
   }
 };
 
-const sendToYoutube = async (msg, { videoId, author }) => {
-  if (typeof msg === "string") {
-    msg = `@${author} ` + msg;
-    if (msg.length > 197) {
-      msg = msg.substring(0, 197);
-      msg = msg + "...";
+const sendToYoutube = async ({ payload, message }) => {
+  const {
+    author,
+    content,
+    timestamp,
+    timestampUsec,
+    videoId,
+    thumbnailUrl
+  } = message;
+  if (typeof payload === "string") {
+    payload = `@${message.author} ` + payload;
+    if (payload.length > 197) {
+      payload = payload.substring(0, 197);
+      payload = payload + "...";
     }
-
-    // a string we are good to go
-    const json = await sendMessage({ videoId, message: msg });
-    if (json.message === msg) {
-      console.log("message successfuly sent to live chat");
-    }
+    sendLiveMessageToDB({
+      payload,
+      author,
+      content,
+      timestamp,
+      timestampUsec,
+      videoId,
+      thumbnailUrl
+    });
   }
 };
 

@@ -1,25 +1,35 @@
 const firebase = require("./firebase");
 const fetch = require("node-fetch");
+
 const db = firebase.database;
 module.exports.db = db;
 
 const DBResource =
   process.env.NODE_ENV === "development"
-    ? `TestKoreanDictionaryTerms`
+    ? `TEST/KoreanDictionaryTerms`
     : "KoreanDictionaryTerms";
 const videoInfoDBResource =
   process.env.NODE_ENV === "development"
-    ? `TestKoreanListeningPracticePlaylistInfo`
+    ? `TEST/KoreanListeningPracticePlaylistInfo`
     : "KoreanListeningPracticePlaylistInfo";
 const videoPlaylistDBResource =
   process.env.NODE_ENV === "development"
-    ? `TestKoreanListeningPracticePlaylist`
+    ? `TEST/KoreanListeningPracticePlaylist`
     : "KoreanListeningPracticePlaylist";
 const youtubeSubscriptionDBResource =
   process.env.NODE_ENV === "development"
-    ? `TestKoreanUnnieVideos`
+    ? `TEST/KoreanUnnieVideos`
     : "KoreanUnnieVideos";
+const puppetDBResource =
+  process.env.NODE_ENV === "development"
+    ? `TEST/livechat/puppet`
+    : "livechat/puppet";
 
+module.exports.sendLiveMessageToDB = async message => {
+  const eventref = db.ref(`${puppetDBResource}/tasks`);
+  const key = await eventref.push().key;
+  eventref.child(key).update(message);
+};
 module.exports.sendTermToDB = async term => {
   const dbRef = await db.ref(`${DBResource}`);
   return await dbRef.once("value", async function(snapshot) {
