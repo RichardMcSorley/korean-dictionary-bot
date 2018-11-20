@@ -158,9 +158,12 @@ loadFiles({ path: "./commands/" }, ({ library }) => {
     });
   });
 });
-loadFiles({ path: "./events/discord.socket.io/" }, ({ library }) => {
-  socketIO.on(library.name, message => library.handle({ message, bot, db }));
+socketIO.on("connect", () => {
+  loadFiles({ path: "./events/discord.socket.io/" }, ({ library }) => {
+    socketIO.on(library.name, message => library.handle({ message, bot, db }));
+  });
 });
+
 loadFiles({ path: "./events/discord.bot/" }, ({ library }) => {
   bot.selfEVENTS.set(library.name, library);
   bot.on(library.name, message => library.handle({ message, bot, db }));

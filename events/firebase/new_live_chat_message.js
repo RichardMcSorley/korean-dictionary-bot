@@ -4,6 +4,7 @@ const livechatDBResource =
   process.env.NODE_ENV === "development" ? `livechat` : "livechat";
 
 const handle = ({ message }) => {
+  console.log("new meesage");
   const msg = message.val();
   if (msg.author !== "Nightbot" && msg.author !== "Korean Dictionary *") {
     io.emit("NEW_YOUTUBE_LIVE_MESSAGE", msg);

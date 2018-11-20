@@ -11,8 +11,14 @@ const handle = ({ message, bot }) => {
   }
 };
 
-const sendToYoutube = async (msg, { videoId }) => {
+const sendToYoutube = async (msg, { videoId, author }) => {
   if (typeof msg === "string") {
+    msg = `@${author} ` + msg;
+    if (msg.length > 197) {
+      msg = msg.substring(0, 197);
+      msg = msg + "...";
+    }
+
     // a string we are good to go
     const json = await sendMessage({ videoId, message: msg });
     if (json.message === msg) {

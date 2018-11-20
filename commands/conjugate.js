@@ -41,18 +41,23 @@ const handle = async ({ message, options, bot, prefix }) => {
   const tenses = _.groupBy(filteredAndSorted, cj => {
     return cj.info.tense;
   });
+  let string = `${cmd} : (${koreanhWordType} ${titleCase(englishWordType)})`;
+
   Object.keys(tenses).forEach(tense => {
     let results = [];
     const uniqResults = _.uniq(tenses[tense], true, tense => {
       return tense.result;
     });
+    string = string + " " + tense + " =>";
     uniqResults.forEach(res => {
       let { result, info } = res;
       const { tense, formality, wordType } = info;
       if (tense === "conditional") {
         results.push(`${result}***면*** *${formality}*`);
+        string = string + " " + `${result}면`;
       } else {
         results.push(`${result} *${formality}*`);
+        string = string + " " + `${result}`;
       }
     });
 
@@ -63,9 +68,7 @@ const handle = async ({ message, options, bot, prefix }) => {
     `${cmd} : (${koreanhWordType} ${titleCase(englishWordType)})`
   );
   if (message.channel.type === "youtube") {
-    return message.channel.send(
-      "The !conj command is only available for discord members. Maybe try again another time."
-    );
+    return message.channel.send(string);
   }
   return message.channel.send(options);
 };

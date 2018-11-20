@@ -1,5 +1,6 @@
 const { io } = require("../../next-server");
 const { db } = require("../../firebase");
+const moment = require("moment");
 const { sendMessage } = require("../../resources/puppet-api");
 const connectedMessage = "🤖 SUCCESSFULLY CONNECTED 📚";
 const youtubeSubscriptionDBResource =
@@ -10,7 +11,6 @@ const youtubeSubscriptionDBResource =
 const handle = ({ message }) => {
   const video = message.val();
   if (
-    video.publishedAt &&
     moment(video.publishedAt, "YYYY-MM-DDThh:mm:ss.sZ").isBetween(
       moment().subtract(30, "minutes"),
       moment()
@@ -39,10 +39,7 @@ const connectToStream = async videoId => {
 };
 
 module.exports = {
-  ref: db
-    .ref(youtubeSubscriptionDBResource)
-    .orderByKey()
-    .limitToLast(1),
+  ref: db.ref(youtubeSubscriptionDBResource + "/videos"),
   name: "child_added",
   handle: handle
 };

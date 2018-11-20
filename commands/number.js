@@ -48,7 +48,7 @@ module.exports = {
     }
   },
   usage: "!number [number]",
-  description: "Translate a number from Korean, or into Korean",
+  description: "Translate a number into Korean or English",
   exampleUsage: "!number 300",
   exampleResult: "In Korean 300 is 3백 - baeg"
 };
