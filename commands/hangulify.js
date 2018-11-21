@@ -25,9 +25,9 @@ const handle = ({ message, options, bot, prefix }) => {
     return numberHandle.handle({ message, options, bot, prefix });
   }
   if (hasKOTXT) {
-    string = `Romanized that's ***${kpop.romanize(msg)}***`;
+    string = `Romanized that's ${kpop.romanize(msg)}`;
   } else {
-    string = `Hungulified that's ***${kpop.hangulify(msg)}***`;
+    string = `Hungulified that's ${kpop.hangulify(msg)}`;
   }
   if (message.channel.type === "youtube") {
     return message.channel.send(string);
@@ -61,11 +61,37 @@ module.exports = {
       lang: "en",
       display: "lang"
     },
+    "!rom": {
+      match: "hungulify",
+      value: "!rom ",
+      lang: "en",
+      display: false
+    },
+    "!hun": {
+      match: "hungulify",
+      value: "!hun ",
+      lang: "en",
+      display: false
+    },
     "!한굴": {
-      match: "한굴",
+      match: "hungulify",
       value: "!한굴 ",
       lang: "ko",
       display: "lang"
+    },
+
+    "!r": {
+      match: "hungulify",
+      value: "!r ",
+      lang: "eng",
+      display: false
+    },
+
+    "!h": {
+      match: "hungulify",
+      value: "!h ",
+      lang: "eng",
+      display: false
     }
   },
   usage: "!hungulify [english|korean]",

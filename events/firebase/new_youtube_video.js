@@ -1,52 +1,74 @@
-const { io } = require("../../next-server");
-const { db } = require("../../firebase");
+const { findKoreanUnnie } = require("../../utils/search");
+const { db, getChannelInfoFromDB } = require("../../firebase");
 const Queue = require("firebase-queue");
-const youtubeSubscriptionDBResource =
-  process.env.NODE_ENV === "development"
-    ? `TEST/KoreanUnnieVideos`
-    : "KoreanUnnieVideos";
 const moment = require("moment");
-const { sendMessage } = require("../../resources/puppet-api");
-const connectedMessage = "🤖 SUCCESSFULLY CONNECTED 📚";
-const queue = new Queue(
-  db.ref(youtubeSubscriptionDBResource),
-  { sanitize: false, suppressStack: true },
-  (video, progress, resolve, reject) => {
-    if (
-      moment(video.publishedAt, "YYYY-MM-DDThh:mm:ss.sZ").isBetween(
-        moment().subtract(30, "minutes"),
-        moment()
-      )
-    ) {
-      if (video.liveBroadcastContent === "live") {
-        console.log("attempting to connect to live stream ");
-        connectToStream(video.videoId);
+let videoCache = {};
+const videoDBRes = "videos";
+const discordChannel = process.env.YOUTUBE_DISCORD_CHANNEL;
+const constants = require("../../utils/constants");
+var numeral = require("numeral");
+const handle = async ({ bot }) => {
+  const queue = new Queue(
+    db.ref(videoDBRes),
+    { sanitize: false, suppressStack: true },
+    async (video, progress, resolve, reject) => {
+      if (
+        isVideoYoung(video) &&
+        !(video.videoId in videoCache) &&
+        isKoreanUnnie(video)
+      ) {
+        videoCache[video.videoId] = 1; // add to cache
+        const channelInfo = await getChannelInfoFromDB(video.channelId);
+        let verb = "uploaded";
+        if (video.liveBroadcastContent === "live") {
+          verb = "is live";
+        }
+        if (video.liveBroadcastContent === "upcoming") {
+          verb = "is about to go live";
+        }
+        const channel = await bot.channels.get(discordChannel);
+        let options = constants.GET_DEFAULT_MESSAGE_OPTIONS();
+        options.setAuthor(
+          `${channelInfo.title} is now at ${numeral(
+            channelInfo.subscriberCount
+          ).format("0a")} subscribers and ${numeral(
+            channelInfo.viewCount
+          ).format("0a")} total views.`,
+          channelInfo.smallImage,
+          channelInfo.url
+        );
+        options.setURL(video.videoUrl);
+        await channel.send(
+          `**@everyone ${video.channelTitle}** ${verb} **${video.title}** at ${
+            video.videoUrl
+          }`
+        );
+        await channel.send(options);
       }
-      io.emit("NEW_VIDEO", video);
-    }
-    return db
-      .ref(youtubeSubscriptionDBResource)
-      .child(video._id)
-      .remove()
-      .then(resolve)
-      .catch(reject);
-  }
-);
 
-const connectToStream = async videoId => {
-  try {
-    const json = await sendMessage({ videoId, message: connectedMessage });
-    if (json.message === connectedMessage) {
-      console.log(
-        "Bot is connected to live stream, https://youtube.com/watch?v=" +
-          videoId
-      );
+      db.ref(videoDBRes + "/processed/" + video.videoId).set(1);
+      return db
+        .ref(videoDBRes)
+        .child(video._id)
+        .remove()
+        .then(resolve)
+        .catch(reject);
     }
-  } catch (error) {
-    console.log("Could not connect to live server", error);
-  }
+  );
+  const isVideoYoung = video => {
+    return moment(video.publishedAt, "YYYY-MM-DDThh:mm:ss.sZ").isBetween(
+      moment().subtract(1, "hour"),
+      moment()
+    );
+  };
+  const isKoreanUnnie = video => {
+    return findKoreanUnnie(
+      `${video.channelTitle} ${video.description} ${video.title}`
+    );
+  };
 };
 
 module.exports = {
-  queue
+  needsBot: true,
+  handle
 };

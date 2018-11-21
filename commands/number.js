@@ -45,6 +45,19 @@ module.exports = {
       value: "!number ",
       lang: "en",
       display: true
+    },
+    "!num": {
+      match: "number",
+      value: "!num ",
+      lang: "en",
+      display: false
+    },
+
+    "!n": {
+      match: "number",
+      value: "!n ",
+      lang: "en",
+      display: false
     }
   },
   usage: "!number [number]",

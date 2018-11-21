@@ -1,29 +1,12 @@
 const firebase = require("./firebase");
-const fetch = require("node-fetch");
-
 const db = firebase.database;
 module.exports.db = db;
 
-const DBResource =
-  process.env.NODE_ENV === "development"
-    ? `TEST/KoreanDictionaryTerms`
-    : "KoreanDictionaryTerms";
-const videoInfoDBResource =
-  process.env.NODE_ENV === "development"
-    ? `TEST/KoreanListeningPracticePlaylistInfo`
-    : "KoreanListeningPracticePlaylistInfo";
-const videoPlaylistDBResource =
-  process.env.NODE_ENV === "development"
-    ? `TEST/KoreanListeningPracticePlaylist`
-    : "KoreanListeningPracticePlaylist";
-const youtubeSubscriptionDBResource =
-  process.env.NODE_ENV === "development"
-    ? `TEST/KoreanUnnieVideos`
-    : "KoreanUnnieVideos";
-const puppetDBResource =
-  process.env.NODE_ENV === "development"
-    ? `TEST/livechat/puppet`
-    : "livechat/puppet";
+const DBResource = "dictionary/terms";
+const videoInfoDBResource = "playlist/info";
+const videoPlaylistDBResource = "playlist/list";
+const youtubeSubscriptionDBResource = "videos";
+const puppetDBResource = "livechat/puppet";
 
 module.exports.sendLiveMessageToDB = async message => {
   const eventref = db.ref(`${puppetDBResource}/tasks`);
@@ -49,8 +32,10 @@ module.exports.getTermsFromDB = async () => {
   return value;
 };
 
-module.exports.getChannelInfoFromDB = async () => {
-  const eventref = db.ref(youtubeSubscriptionDBResource + "/channel");
+module.exports.getChannelInfoFromDB = async channelId => {
+  const eventref = db.ref(
+    youtubeSubscriptionDBResource + "/channel/" + channelId
+  );
   const snapshot = await eventref.once("value");
   const value = snapshot.val();
   return value;
@@ -63,21 +48,21 @@ module.exports.resetTermsOnDB = async () => {
 
 module.exports.sendVideoInfoToDB = async videoInfo => {
   const dbRef = await db.ref(`${videoInfoDBResource}`);
-  return await dbRef.once("value", async function(snapshot) {
+  return await dbRef.once("value", async function() {
     return await dbRef.child(videoInfo.videoId).set(videoInfo);
   });
 };
 
 module.exports.updateVideoPlaylist = async playlist => {
   const dbRef = await db.ref(`${videoPlaylistDBResource}`);
-  return await dbRef.once("value", async function(snapshot) {
+  return await dbRef.once("value", async function() {
     return await dbRef.set(playlist);
   });
 };
 
 module.exports.getVideoInfoFromDB = async videoInfo => {
   const dbRef = await db.ref(`${videoInfoDBResource}`);
-  return await dbRef.once("value", async function(snapshot) {
+  return await dbRef.once("value", async function() {
     return await dbRef.child(videoInfo.videoId).set(videoInfo);
   });
 };

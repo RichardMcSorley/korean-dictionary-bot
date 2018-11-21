@@ -2,7 +2,7 @@ const constants = require("../../utils/constants");
 var numeral = require("numeral");
 const handle = async ({ bot, message, db }) => {
   const video = message;
-  const channelInfo = await db.getChannelInfoFromDB();
+  const channelInfo = await db.getChannelInfoFromDB(video.channelId);
   let verb = "uploaded";
   if (video.liveBroadcastContent === "live") {
     verb = "is live";
@@ -10,7 +10,7 @@ const handle = async ({ bot, message, db }) => {
   if (video.liveBroadcastContent === "upcoming") {
     verb = "is about to go live";
   }
-  const channel = bot.channels.get(process.env.YOUTUBE_DISCORD_CHANNEL);
+  const channel = await bot.channels.get(process.env.YOUTUBE_DISCORD_CHANNEL);
   let options = constants.GET_DEFAULT_MESSAGE_OPTIONS();
   options.setAuthor(
     `${channelInfo.title} is now at ${numeral(

@@ -38,6 +38,19 @@ module.exports = {
       value: "!keyboard ",
       lang: "en",
       display: true
+    },
+    "!key": {
+      match: "keyboard",
+      value: "!key ",
+      lang: "en",
+      display: false
+    },
+
+    "!k": {
+      match: "keyboard",
+      value: "!k ",
+      lang: "en",
+      display: false
     }
   },
   usage: "!keyboard [text]",

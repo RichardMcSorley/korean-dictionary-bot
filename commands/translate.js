@@ -76,6 +76,18 @@ module.exports = {
       value: "!translate ",
       lang: "en",
       display: true
+    },
+    "!tra": {
+      match: "translate",
+      value: "!tra ",
+      lang: "en",
+      display: false
+    },
+    "!t": {
+      match: "translate",
+      value: "!t ",
+      lang: "en",
+      display: false
     }
   },
   usage: "!translate [word|phrase]",

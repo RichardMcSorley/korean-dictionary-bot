@@ -43,11 +43,30 @@ module.exports = {
       lang: "en",
       display: "lang"
     },
+    "!gam": {
+      match: "ggami",
+      value: "!gam ",
+      lang: "en",
+      display: false
+    },
     "!까미": {
       match: "ggami",
       value: "!까미 ",
       lang: "ko",
       display: "lang"
+    },
+    "!dog": {
+      match: "ggami",
+      value: "!dog ",
+      lang: "en",
+      display: false
+    },
+
+    "!g": {
+      match: "ggami",
+      value: "!g ",
+      lang: "en",
+      display: false
     }
   },
   usage: "!ggami",

@@ -53,10 +53,10 @@ process.on("unhandledRejection", err => {
 });
 process.on("SIGINT", function() {
   console.log("Starting queue shutdown");
-  liveQ.shutdown().then(function() {
-    videoQ.shutdown().then(function() {
-      console.log("shutdown all Queues");
-      process.exit(0);
-    });
-  });
+  // liveQ.shutdown().then(function() {
+  //   videoQ.shutdown().then(function() {
+  //     console.log("shutdown all Queues");
+  //     process.exit(0);
+  //   });
+  // });
 });

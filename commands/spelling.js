@@ -62,7 +62,11 @@ const sendToUser = () => {
     globalOptions.addField(`Spell check provided by ${location}`, url);
     string += ` Original: ${token} => Suggestion: ${suggestions} ${typeText} `;
   });
-
+  if (string.length === 0) {
+    string =
+      "It seems there are no grammar or spelling mistakes, congratulations!";
+    globalOptions.setDescription(string);
+  }
   if (globalMessage.channel.type === "youtube") {
     return globalMessage.channel.send(string);
   }
@@ -110,6 +114,24 @@ module.exports = {
       value: "!spelling ",
       lang: "en",
       display: true
+    },
+    "!spe": {
+      match: "spelling",
+      value: "!spe ",
+      lang: "en",
+      display: false
+    },
+    "!spell": {
+      match: "spelling",
+      value: "!spell ",
+      lang: "en",
+      display: false
+    },
+    "!s": {
+      match: "spelling",
+      value: "!s ",
+      lang: "en",
+      display: false
     }
   },
   usage: "!spelling [sentence|word]",

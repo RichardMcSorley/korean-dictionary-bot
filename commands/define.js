@@ -69,6 +69,19 @@ module.exports = {
       value: "!정의 ",
       lang: "ko",
       display: "lang"
+    },
+    "!def": {
+      match: "define",
+      value: "!def ",
+      lang: "ko",
+      display: false
+    },
+
+    "!d": {
+      match: "define",
+      value: "!d ",
+      lang: "ko",
+      display: false
     }
   },
   usage: "!define [word]",

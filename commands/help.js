@@ -14,11 +14,18 @@ const handle = ({ message, options, bot }) => {
     listOfCommands.forEach(({ name }) => {
       commandString += ` ${name} `;
     });
-    return message.channel.send("Korean Dictionary Commands:" + commandString);
+    return message.channel.send(
+      "Korean Dictionary Commands:" + commandString,
+      true
+    );
   }
   listOfCommands.forEach(({ usage, description }) => {
-    options.addField(usage, description);
+    options.addField(usage, description, true);
   });
+  options.addField(
+    "Shorthand",
+    "Most commands have a 3 and 1 character short hand ***!keyboard*** becomes ***!key*** or ***!k***"
+  );
   options.setTitle("Korean Dictionary Commands:");
   return message.channel.send(options);
 };
@@ -41,6 +48,18 @@ module.exports = {
     "!commands": {
       match: "help",
       value: "!commands ",
+      lang: "en",
+      display: false
+    },
+    "!com": {
+      match: "help",
+      value: "!com ",
+      lang: "en",
+      display: false
+    },
+    "!hel": {
+      match: "help",
+      value: "!hel ",
       lang: "en",
       display: false
     }

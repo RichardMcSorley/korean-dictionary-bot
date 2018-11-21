@@ -4,9 +4,6 @@ const { getFirstTextAnalyze } = require("../resources/word-analyzer");
 const { titleCase } = require("../utils/format-text");
 const _ = require("underscore");
 const handle = async ({ message, options, bot, prefix }) => {
-  options.setThumbnail(
-    "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/155/books_1f4da.png"
-  );
   const errorTxt = `\nExample: \`\`\`${
     module.exports.exampleUsage
   }\`\`\` \nResult: \`\`\`${module.exports.exampleResult}\`\`\``;
@@ -23,15 +20,23 @@ const handle = async ({ message, options, bot, prefix }) => {
   }
   let {
     englishWordType,
-    koreanhWordType,
+    koreanWordType,
     koreanWord
   } = await getFirstTextAnalyze(cmd);
   if (koreanWord) {
     cmd = koreanWord;
   }
+  if (englishWordType === koreanWordType) {
+    let string = `Could not find a match :(`;
+    if (message.channel.type === "youtube") {
+      return message.channel.send(string);
+    }
+    options.setDescription(string);
+    return message.channel.send(options);
+  }
 
   const filteredAndSorted = allPossibles
-    .filter(s => s.wordType === englishWordType)
+    .filter(s => s.wordType === englishWordType.toLowerCase())
     .map(info => {
       return {
         result: koreanConjugator.conjugate(cmd, info),
@@ -41,7 +46,7 @@ const handle = async ({ message, options, bot, prefix }) => {
   const tenses = _.groupBy(filteredAndSorted, cj => {
     return cj.info.tense;
   });
-  let string = `${cmd} : (${koreanhWordType} ${titleCase(englishWordType)})`;
+  let string = `${cmd} : (${koreanWordType} ${titleCase(englishWordType)})`;
 
   Object.keys(tenses).forEach(tense => {
     let results = [];
@@ -56,16 +61,23 @@ const handle = async ({ message, options, bot, prefix }) => {
         results.push(`${result}***면*** *${formality}*`);
         string = string + " " + `${result}면`;
       } else {
-        results.push(`${result} *${formality}*`);
-        string = string + " " + `${result}`;
+        if (formality) {
+          results.push(`${result} *${formality}*`);
+          string = string + " " + `${result}`;
+        } else {
+          results.push(`${result}`);
+          string = string + " ";
+        }
       }
     });
 
     options.addField(`${titleCase(tense)}`, `${results.join("\n")}`, true);
   });
-
+  options.setThumbnail(
+    "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/155/books_1f4da.png"
+  );
   options.setTitle(
-    `${cmd} : (${koreanhWordType} ${titleCase(englishWordType)})`
+    `${cmd} : (${koreanWordType} ${titleCase(englishWordType)})`
   );
   if (message.channel.type === "youtube") {
     return message.channel.send(string);
@@ -105,13 +117,20 @@ module.exports = {
       match: "conjugate",
       value: "!conjugate ",
       lang: "en",
-      display: false
+      display: true
     },
     "!conj": {
       match: "conjugate",
       value: "!conj ",
       lang: "en",
-      display: true
+      display: false
+    },
+
+    "!c": {
+      match: "conjugate",
+      value: "!c ",
+      lang: "en",
+      display: false
     }
   },
   usage: "!conj [word]",

@@ -4,7 +4,7 @@ const getEnglishWordType = (enWordType, cmd) => {
   enWordType = replaceAll(enWordType, `${cmd}`, "");
   enWordType = replaceAll(enWordType, ": [0-9]+, [0-9]+", ""); // numbers
   enWordType = enWordType.replace(/[.*+?^${}()|[\]\\]/g, ""); // curly braces
-  enWordType = enWordType.replace(/[\u3131-\uD79D]/giu, "").toLowerCase(); // remove all ko text
+  enWordType = enWordType.replace(/[\u3131-\uD79D]/giu, ""); // remove all ko text
   return enWordType;
 };
 const getKoreanWordType = (parse, cmd) => {
@@ -30,7 +30,7 @@ const getKoreanWordType = (parse, cmd) => {
   parse = replaceAll(parse, "Conjunction", "연결사");
   parse = replaceAll(parse, "/", " / ");
   parse = parse.replace(/[.*+?^${}()|[\]\\]/g, ""); // curly braces
-  return { koreanhWordType: parse, koreanWord };
+  return { koreanWordType: parse, koreanWord };
 };
 
 function replaceAll(str, find, replace) {
@@ -53,10 +53,9 @@ const getFirstTextAnalyze = async msg => {
   try {
     const result = await textAnalyze(msg);
     const [first] = result.tokens;
-    const { koreanhWordType, koreanWord } = getKoreanWordType(first, msg);
+    const { koreanWordType, koreanWord } = getKoreanWordType(first, msg);
     const englishWordType = getEnglishWordType(first, msg);
-    console.log("results", englishWordType, koreanhWordType, koreanWord);
-    return { englishWordType, koreanhWordType, koreanWord };
+    return { englishWordType, koreanWordType, koreanWord };
   } catch (error) {
     console.log("Could not send message", error);
     return {};

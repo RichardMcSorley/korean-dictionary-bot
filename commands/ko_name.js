@@ -60,6 +60,12 @@ module.exports = {
       lang: "en",
       display: false
     },
+    "!nam": {
+      match: "name",
+      value: "!nam ",
+      lang: "en",
+      display: false
+    },
     korean_name: {
       match: "name",
       value: "name me ",

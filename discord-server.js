@@ -169,5 +169,9 @@ loadFiles({ path: "./events/discord.bot/" }, ({ library }) => {
   bot.on(library.name, message => library.handle({ message, bot, db }));
 });
 loadFiles({ path: "./events/firebase/" }, ({ library }) => {
-  // library.ref.on(library.name, message => library.handle({ message, bot, db }));
+  if(library.needsBot){
+    library.handle({ bot, db })
+  }
+
+  
 });
