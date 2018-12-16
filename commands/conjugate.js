@@ -38,8 +38,9 @@ const handle = async ({ message, options, bot, prefix }) => {
   const filteredAndSorted = allPossibles
     .filter(s => s.wordType === englishWordType.toLowerCase())
     .map(info => {
+      let options = { ...info };
       return {
-        result: koreanConjugator.conjugate(cmd, info),
+        result: koreanConjugator.conjugate(cmd, options),
         info
       };
     });
@@ -92,7 +93,11 @@ const allPossibles = [
   { tense: "past", formality: "formal", wordType: "adjective" },
   { tense: "future", formality: "formal", wordType: "adjective" },
   { tense: "prepared", formality: "formal", wordType: "adjective" },
-  { tense: "conditional", formality: "formal", wordType: "adjective" },
+  {
+    tense: "conditional",
+    formality: "formal",
+    wordType: "adjective"
+  },
   { tense: "present", formality: "casual", wordType: "adjective" },
   { tense: "past", formality: "casual", wordType: "adjective" },
   { tense: "future", formality: "casual", wordType: "adjective" },
@@ -133,7 +138,7 @@ module.exports = {
       display: false
     }
   },
-  usage: "!conj [word]",
+  usage: "!conjugate [word]",
   description: "Get conjugations for a given word",
   exampleUsage: "!conj 좋다",
   exampleResult: "좋어요 formal"

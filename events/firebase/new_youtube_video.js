@@ -9,7 +9,7 @@ const constants = require("../../utils/constants");
 var numeral = require("numeral");
 const handle = async ({ bot }) => {
   const queue = new Queue(
-    db.ref(videoDBRes),
+    db.ref(videoDBRes + 2),
     { sanitize: false, suppressStack: true },
     async (video, progress, resolve, reject) => {
       if (
@@ -22,6 +22,17 @@ const handle = async ({ bot }) => {
         let verb = "uploaded";
         if (video.liveBroadcastContent === "live") {
           verb = "is live";
+          const ko = {
+            announcement: `여러분! 안녕하세요. 한국언니 방송 시작핬습니다!`,
+            lang: "ko"
+          };
+          const en = {
+            announcement: `Korean Unnie is live, go check it out!`,
+            lang: "en-us"
+          };
+          bot.cachedQueue.splice(0, 0, en); //add announcement to queue
+          bot.cachedQueue.splice(0, 0, ko); //add announcement to queue
+          bot.broadcastState.broadcast.end(); // stop current audio
         }
         if (video.liveBroadcastContent === "upcoming") {
           verb = "is about to go live";
@@ -38,6 +49,7 @@ const handle = async ({ bot }) => {
           channelInfo.url
         );
         options.setURL(video.videoUrl);
+        console.log("about to send to channel");
         await channel.send(
           `**@everyone ${video.channelTitle}** ${verb} **${video.title}** at ${
             video.videoUrl
@@ -45,10 +57,9 @@ const handle = async ({ bot }) => {
         );
         await channel.send(options);
       }
-
       db.ref(videoDBRes + "/processed/" + video.videoId).set(1);
       return db
-        .ref(videoDBRes)
+        .ref(videoDBRes + 2)
         .child(video._id)
         .remove()
         .then(resolve)
@@ -63,7 +74,9 @@ const handle = async ({ bot }) => {
   };
   const isKoreanUnnie = video => {
     return findKoreanUnnie(
-      `${video.channelTitle} ${video.description} ${video.title}`
+      `${video.channelTitle} ${video.description} ${video.title} ${
+        video.channelTitle
+      }`
     );
   };
 };
@@ -71,4 +84,5 @@ const handle = async ({ bot }) => {
 module.exports = {
   needsBot: true,
   handle
+  //  queue
 };

@@ -23,7 +23,7 @@ const handle = ({ message, options, bot }) => {
     options.addField(usage, description, true);
   });
   options.addField(
-    "Shorthand",
+    "Tip:",
     "Most commands have a 3 and 1 character short hand ***!keyboard*** becomes ***!key*** or ***!k***"
   );
   options.setTitle("Korean Dictionary Commands:");
@@ -61,6 +61,18 @@ module.exports = {
       match: "help",
       value: "!hel ",
       lang: "en",
+      display: false
+    },
+    "!도움": {
+      match: "help",
+      value: "!도움 ",
+      lang: "ko",
+      display: false
+    },
+    "!명령어": {
+      match: "help",
+      value: "!명령어 ",
+      lang: "ko",
       display: false
     }
   }

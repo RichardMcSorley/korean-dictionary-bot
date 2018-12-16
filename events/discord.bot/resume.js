@@ -1,5 +1,5 @@
-const handle = async ({ message }) => {
-  console.log("botOnResume");
+const handle = async ({ message, bot }) => {
+  bot.fixBroadcast();
 };
 
 module.exports = {

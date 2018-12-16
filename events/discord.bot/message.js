@@ -4,10 +4,7 @@ const constants = require("../../utils/constants");
 const { hasKoreanTXT } = require("../../utils/language");
 const helpHandle = require("../../commands/help");
 const handle = async ({ message, bot }) => {
-  // on message event
   if (message.author.bot || message.system) {
-    // Ignore bots
-    // check for if its KLP
     return;
   }
   const isKorean = hasKoreanTXT(message.content);

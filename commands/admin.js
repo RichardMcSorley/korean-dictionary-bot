@@ -1,23 +1,37 @@
 const util = require("util");
-const handle = ({ message, options, prefix, bot }) => {
+const { getData } = require("../routes/index");
+const handle = async ({ message, options, prefix, bot, db }) => {
+  if (
+    !message.member.roles.some(r =>
+      ["Discord Manager", "한국언니"].includes(r.name)
+    )
+  ) {
+    return;
+  }
   const usedPrefix = prefix.prefix[prefix.name];
   const prefixIndex = message.content.indexOf(usedPrefix.value);
   const msg = message.content.slice(prefixIndex + usedPrefix.value.length); // slice of the prefix on the message
   let args = msg.split(" "); // break the message into part by spaces
   const cmd = args[0].toLowerCase(); // set the first word as the command in lowercase just in case
   args.shift(); // delete the first word from the args
+  if (cmd === "")
+    return message.channel.send(
+      "Admin members can type `!admin restart` or `!admin words`"
+    );
   if (cmd === "words" || cmd === "word") {
-    // const buffer = await getWordCloud();
-    // options.attachFile(buffer)
-    message.channel.send(options);
+    const terms = await getData();
+    message.channel.send("```json\n" + JSON.stringify(terms, null, 2) + "```");
     return;
-  } else if (
-    cmd === "eval" &&
-    message.author.id === process.env.KOREAN_DICT_BOT_DISCORD_OWNER
-  ) {
+  } else if (cmd === "eval") {
+    if (message.author.id !== process.env.KOREAN_DICT_BOT_DISCORD_OWNER) {
+      return;
+    }
     // < checks the message author's id to owners
     const code = args.join(" ");
     return evalCmd({ message, code, bot, options, prefix });
+  } else {
+    bot.fire(cmd);
+    return;
   }
 };
 

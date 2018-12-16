@@ -15,15 +15,15 @@ bot.lastKLPmessage = null;
 bot.commands = new Discord.Collection();
 bot.socketIOEVENTS = new Discord.Collection();
 bot.selfEVENTS = new Discord.Collection();
+bot.announcement = null;
+bot.announcementLang = "en-us";
+bot.cachedQueue = null;
 
 bot.login(process.env.KOREAN_DICT_BOT_DISCORD_TOKEN);
 const broadcastState = {
-  broadcast: bot.createVoiceBroadcast(),
-  paused: false,
-  currentAudio: null,
-  currentInfo: null,
-  time: null
+  broadcast: bot.createVoiceBroadcast()
 };
+bot.broadcastState = broadcastState;
 broadcastState.broadcast.on("subscribe", dispatcher => {
   dispatcher.on("error", e => console.log("dispatcher error", e));
   dispatcher.on("debug", info => console.info("dispatcher debug", info));
@@ -34,12 +34,20 @@ broadcastState.broadcast.on("unsubscribe", dispatcher => {
   console.log("Channel unsubscribed from broadcast :(");
 });
 
-broadcastState.broadcast.on("end", () => bot.playNextSong());
-broadcastState.broadcast.on("error", () => {
-  broadcastState.broadcast.destroy();
-  broadcastState.broadcast = bot.createVoiceBroadcast();
-  prepareKLPChannel();
+broadcastState.broadcast.on("end", () => {
+  if (!bot.broadcastState.broadcast.paused) {
+    bot.playNextSong();
+  }
 });
+broadcastState.broadcast.on("error", () => {
+  bot.fixBroadcast();
+});
+
+bot.fixBroadcast = () => {
+  +broadcastState.broadcast.destroy();
+  broadcastState.broadcast = bot.createVoiceBroadcast();
+  bot.prepareKLPChannel();
+};
 
 // use fire for admin purposes, in discord use !admin eval bot.fire('restart') to restart the server
 bot.fire = action => {
@@ -97,35 +105,67 @@ bot.connectToBroadcast = channel => {
 };
 
 bot.playNextSong = async () => {
-  const audio = await bot.getNextAudio();
-  if (audio === null) {
+  nextAudio = await bot.getNextAudio();
+  if (nextAudio === null) {
+    console.log("no audio, trying again");
     bot.playNextSong(); // try again
   } else {
-    bot.playAudioToBroadcast(audio);
+    if (nextAudio && nextAudio.announcement) {
+      bot.playAnnouncement(nextAudio);
+    } else {
+      bot.playAudioToBroadcast(nextAudio);
+    }
   }
 };
 
 bot.getNextAudio = async () => {
-  let queue = await db.getPlaylistFromDB();
+  let queue;
+  if (bot.cachedQueue) {
+    queue = bot.cachedQueue;
+  } else {
+    queue = await db.getPlaylistFromDB();
+    bot.cachedQueue = queue;
+  }
   if (queue === null) {
     return null;
   }
   // add currentAudio to end of queue
   const currentAudio = queue.shift(); // remove from list
-  queue.push(currentAudio); // add currnetAudio to end of queue
-  await webhooks.updatePlaylist(queue); // update list
+  if (typeof currentAudio === "string") {
+    queue.push(currentAudio); // add currnetAudio to end of queue
+    await webhooks.updatePlaylist(queue); // update list
+    db.getPlaylistInfoFromDB().then(info => {
+      const { title, url } = info[currentAudio];
+      bot.user.setActivity("한국어 듣기 연습방: " + title, {
+        type: "PLAYING",
+        url
+      });
+    });
+  }
+
   return currentAudio;
 };
 
-bot.playAudioToBroadcast = audio => {
-  const stream = ytdl(audio, { filter: "audioonly" });
+bot.playAudioToBroadcast = videoID => {
+  const stream = ytdl(videoID, { filter: "audioonly" });
+  broadcastState.broadcast.playStream(stream);
+};
+
+bot.playLiveStream = videoID => {
+  const stream = ytdl(videoID, { quality: "lowest" });
+  broadcastState.broadcast.playStream(stream);
+};
+
+bot.playAnnouncement = async ({ announcement, lang }) => {
+  var gtts = require("node-gtts")(lang);
+  const stream = gtts.stream(announcement);
   broadcastState.broadcast.playStream(stream);
 };
 
 // pause if no one is listening
-setInterval(() => {
-  bot.pauseBroadcast();
-}, 3000);
+//setInterval(() => {
+//  bot.pauseBroadcast();
+//}, 3000);
 
 bot.pauseBroadcast = () => {
   let totalMembers = -1; // subtract ourself
@@ -137,11 +177,11 @@ bot.pauseBroadcast = () => {
     }
   });
   if (totalMembers === 0 && !broadcastState.paused) {
-    bot.fire("pause");
-    console.log("Pausing broadcast", total, "users connected");
+    // bot.fire("pause");
+    console.log("Pausing broadcast", totalMembers, "users connected");
   } else if (totalMembers > 0 && broadcastState.paused) {
-    bot.fire("resume");
-    console.log("Resuming broadcast", total, "users connected");
+    // bot.fire("resume");
+    console.log("Resuming broadcast", totalMembers, "users connected");
   }
 };
 
@@ -169,9 +209,7 @@ loadFiles({ path: "./events/discord.bot/" }, ({ library }) => {
   bot.on(library.name, message => library.handle({ message, bot, db }));
 });
 loadFiles({ path: "./events/firebase/" }, ({ library }) => {
-  if(library.needsBot){
-    library.handle({ bot, db })
+  if (library.needsBot) {
+    library.handle({ bot, db });
   }
-
-  
 });

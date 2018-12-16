@@ -1,5 +1,5 @@
 const handle = async ({ message }) => {
-  console.log("botOnWarn");
+  console.log("botOnWarn", message);
 };
 
 module.exports = {

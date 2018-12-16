@@ -1,6 +1,5 @@
 const handle = async ({ bot }) => {
-  bot.user.setActivity("Looking up words!");
-  bot.prepareKLPChannel();
+  bot.user.setActivity("Watching for Videos");
   console.log(
     `Bot is online!\n${bot.users.size} users, in ${
       bot.guilds.size
