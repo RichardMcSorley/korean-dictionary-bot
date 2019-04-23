@@ -6,23 +6,33 @@ metadata:
     app: korean-dictionary-bot
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app:  korean-dictionary-bot
+  template:
+    metadata:
+      labels:
+        app: korean-dictionary-bot
     spec:
       containers:
-      - name: korean-dictionary-bot
-        image: gcr.io/dongdongchat/korean-dictionary-bot
-        env:
-          - name: PORT
-            value: 8080
-        envFrom:
-        - configMapRef:
-            name: firebase
-        envFrom:
-        - configMapRef:
-            name: naver-api
-        envFrom:
-        - configMapRef:
-            name: youtube-api-key-3
-        ports:
-        - containerPort: 8080
-      restartPolicy: OnFailure
+        - name: korean-dictionary-bot
+          image: gcr.io/dongdongchat/korean-dictionary-bot
+          env:
+            - name: PORT
+              value: "8080"
+            - name: NODE_ENV
+              value: production
+            - name: FIREBASE_DATABASE_URL
+              value: https://dongdongchat.firebaseio.com
+          envFrom:
+            - configMapRef:
+                name: firebase
+            - configMapRef:
+                name: naver-api
+            - configMapRef:
+                name: youtube-api-key-3
+            - configMapRef:
+                name: korean-dictionary-bot
+          ports:
+          - containerPort: 8080
       hostNetwork: true
