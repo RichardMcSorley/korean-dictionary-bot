@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: korean-dictionary-bot-deployment
+  labels:
+    app: korean-dictionary-bot
+spec:
+  replicas: 1
+    spec:
+      containers:
+      - name: korean-dictionary-bot
+        image: gcr.io/dongdongchat/korean-dictionary-bot
+        env:
+          - name: PORT
+            value: 8080
+        envFrom:
+        - configMapRef:
+            name: firebase
+        envFrom:
+        - configMapRef:
+            name: naver-api
+        envFrom:
+        - configMapRef:
+            name: youtube-api-key-3
+        ports:
+        - containerPort: 8080
+      restartPolicy: OnFailure
+      hostNetwork: true

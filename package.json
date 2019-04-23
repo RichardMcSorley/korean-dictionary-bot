@@ -21,8 +21,6 @@
     "cheerio": "^1.0.0-rc.2",
     "discord.js": "^11.2.1",
     "dotenv": "^6.0.0",
-    "ffmpeg": "0.0.4",
-    "ffmpeg-binaries": "^4.0.0",
     "firebase": "^5.3.1",
     "firebase-admin": "^5.13.1",
     "firebase-queue": "^1.6.1",

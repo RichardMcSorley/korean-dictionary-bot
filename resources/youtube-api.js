@@ -1,6 +1,6 @@
 const request = require("request");
 const getYouTubeID = require('get-youtube-id');
-const yt_api_key = process.env.youtube_api_key;
+const yt_api_key = process.env.YOUTUBE_API_KEY;
 
 module.exports = {
     search_video: function (query, cb, err) {

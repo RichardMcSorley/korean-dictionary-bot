@@ -20,19 +20,21 @@ const handle = async ({ bot }) => {
         videoCache[video.videoId] = 1; // add to cache
         const channelInfo = await getChannelInfoFromDB(video.channelId);
         let verb = "uploaded";
+        const ko = {
+          announcement: `여러분! 안녕하세요. 한국언니 방송 시작핬습니다!`,
+          lang: "ko",
+          at: ''
+        };
+        const en = {
+          announcement: `@everyone Korean Unnie started a livestream`,
+          lang: "en-us",
+          at: 'at'
+        };
         if (video.liveBroadcastContent === "live") {
           verb = "is live";
-          const ko = {
-            announcement: `여러분! 안녕하세요. 한국언니 방송 시작핬습니다!`,
-            lang: "ko"
-          };
-          const en = {
-            announcement: `Korean Unnie is live, go check it out!`,
-            lang: "en-us"
-          };
-          bot.cachedQueue.splice(0, 0, en); //add announcement to queue
-          bot.cachedQueue.splice(0, 0, ko); //add announcement to queue
-          bot.broadcastState.broadcast.end(); // stop current audio
+          // bot.cachedQueue.splice(0, 0, en); //add announcement to queue
+          // bot.cachedQueue.splice(0, 0, ko); //add announcement to queue
+          // bot.broadcastState.broadcast.end(); // stop current audio
         }
         if (video.liveBroadcastContent === "upcoming") {
           verb = "is about to go live";
@@ -51,7 +53,7 @@ const handle = async ({ bot }) => {
         options.setURL(video.videoUrl);
         console.log("about to send to channel");
         await channel.send(
-          `**@everyone ${video.channelTitle}** ${verb} **${video.title}** at ${
+          `**${announcement} ${video.channelTitle}** ${verb} **${video.title}** ${at} ${
             video.videoUrl
           }`
         );

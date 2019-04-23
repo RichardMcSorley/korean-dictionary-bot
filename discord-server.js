@@ -25,7 +25,10 @@ const broadcastState = {
 };
 bot.broadcastState = broadcastState;
 broadcastState.broadcast.on("subscribe", dispatcher => {
-  dispatcher.on("error", e => console.log("dispatcher error", e));
+  dispatcher.on("error", e => {
+    console.log("dispatcher error", e);
+    process.exit(1);
+  });
   dispatcher.on("debug", info => console.info("dispatcher debug", info));
   console.log("New broadcast subscriber!");
 });
@@ -39,31 +42,19 @@ broadcastState.broadcast.on("end", () => {
     bot.playNextSong();
   }
 });
-broadcastState.broadcast.on("error", () => {
-  bot.fixBroadcast();
+broadcastState.broadcast.on("error", (e) => {
+  console.log(e)
+  process.exit(1)
 });
-
-bot.fixBroadcast = () => {
-  +broadcastState.broadcast.destroy();
-  broadcastState.broadcast = bot.createVoiceBroadcast();
-  bot.prepareKLPChannel();
-};
 
 // use fire for admin purposes, in discord use !admin eval bot.fire('restart') to restart the server
 bot.fire = action => {
-  const { spawn } = require("child_process");
   switch (action) {
     case "restart":
-      const subprocess = spawn(process.argv[0], process.argv.slice(1), {
-        // spawn new process
-        detached: true,
-        stdio: ["ignore"]
-      });
-      subprocess.unref();
       bot.fire("shutdown"); // close this process
       return "restarting";
     case "shutdown":
-      process.exit();
+      process.exit(0);
       return "shutdown";
     case "skip": // run end on broadcast should playNextSong()
       broadcastState.broadcast.end();
@@ -83,6 +74,7 @@ bot.fire = action => {
 bot.run = bot.fire; // sometimes I forget which one ;)
 
 bot.prepareKLPChannel = () => {
+  console.log('prepareKLPChannel')
   bot.playNextSong();
   const channel = bot.channels.get(process.env.INITIAL_VOICE_CHANNEL);
   bot.connectToBroadcast(channel);
