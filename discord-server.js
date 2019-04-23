@@ -128,7 +128,7 @@ bot.getNextAudio = async () => {
     await webhooks.updatePlaylist(queue); // update list
     db.getPlaylistInfoFromDB().then(info => {
       const { title, url } = info[currentAudio];
-      bot.user.setActivity("한국어 듣기 연습방: " + title, {
+      bot.user.setActivity(title, {
         type: "PLAYING",
         url
       });
