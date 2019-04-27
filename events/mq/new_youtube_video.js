@@ -11,7 +11,7 @@ const topic = 'new_youtube_video';
 
 const handle = async ({ bot }) => {
 
-    const rc = mqlight.createClient({service: `amqp://${process.env.MQLIGHT_SERVICE_SERVICE_HOST}:${process.env.MQLIGHT_SERVICE_SERVICE_PORT_AMQP}`});
+    const rc = mqlight.createClient({service: `amqp://${process.env.MQLIGHT_SERVICE_HOST}:${process.env.MQLIGHT_SERVICE_PORT_AMQP}`});
     rc.on('started', ()=> {
         rc.subscribe(topic);
         rc.on('message', function(video) {
