@@ -1,8 +1,12 @@
 FROM node:10-alpine
-ENV NODE_ENV=development
+ENV NODE_ENV=production
 EXPOSE 8080
 
-RUN npm i npm@latest -g && apt-get -y update && apt-get install -y ffmpeg
+RUN npm i npm@latest -g && \
+    apk upgrade -U && \
+    apk add ca-certificates ffmpeg libva-intel-driver && \
+    rm -rf /var/cache/*
+
 RUN mkdir -p /opt/node_app/app/.next && chown node:node /opt/node_app
 
 WORKDIR /opt/node_app
