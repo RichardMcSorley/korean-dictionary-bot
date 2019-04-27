@@ -1,5 +1,5 @@
 const handle = async ({ message, bot }) => {
-  bot.fixBroadcast();
+  bot.prepareKLPChannel();
 };
 
 module.exports = {

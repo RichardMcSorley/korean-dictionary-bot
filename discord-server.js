@@ -200,7 +200,7 @@ loadFiles({ path: "./events/discord.bot/" }, ({ library }) => {
   bot.selfEVENTS.set(library.name, library);
   bot.on(library.name, message => library.handle({ message, bot, db }));
 });
-loadFiles({ path: "./events/firebase/" }, ({ library }) => {
+loadFiles({ path: "./events/mq/" }, ({ library }) => {
   if (library.needsBot) {
     library.handle({ bot, db });
   }
