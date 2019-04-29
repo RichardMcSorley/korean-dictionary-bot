@@ -58,7 +58,7 @@ const handle = async ({ bot }) => {
             options.setURL(video.videoUrl);
             console.log("about to send to channel");
             await channel.send(
-              `**@everyone ${video.channelTitle}** ${verb} **${video.title}** ${at} ${
+              `**@everyone ${video.channelTitle}** ${verb} **${video.title}** at ${
                 video.videoUrl
               }`
             );
