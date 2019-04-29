@@ -1,5 +1,5 @@
 const { findKoreanUnnie } = require("../../utils/search");
-const { db, getChannelInfoFromDB } = require("../../firebase");
+const { db, getChannelInfoFromDB, getProcessedVideos } = require("../../firebase");
 const moment = require("moment");
 let videoCache = {};
 const videoDBRes = "videos";
@@ -11,7 +11,7 @@ const topic = 'new_youtube_video';
 
 const handle = async ({ bot }) => {
     try {
-      videoCache = await db.getProcessedVideos();
+      videoCache = await getProcessedVideos();
       console.log(videoCache);
     } catch (error) {
       console.log(error);
