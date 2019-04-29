@@ -10,7 +10,13 @@ const mqlight = require('mqlight');
 const topic = 'new_youtube_video';
 
 const handle = async ({ bot }) => {
-
+    try {
+      videoCache = await db.getProcessedVideos();
+      console.log(videoCache);
+    } catch (error) {
+      console.log(error);
+      process.exit(1);
+    }
     const rc = mqlight.createClient({service: `amqp://${process.env.MQLIGHT_SERVICE_HOST}:${process.env.MQLIGHT_SERVICE_PORT_AMQP}`});
     rc.on('started', ()=> {
         rc.subscribe(topic);
@@ -18,12 +24,15 @@ const handle = async ({ bot }) => {
             console.log('Recieved Video:', video.videoId);
             runVideoLogic(video);
         });
+        rc.on("error", (err)=>{
+          console.log(err);
+          process.exit(1);
+        });
     });
     
     const runVideoLogic = async (video)=>{
         if (
-            isVideoYoung(video) &&
-            !(video.videoId in videoCache) &&
+            !isVideoInCache(video, videoCache) &&
             isKoreanUnnie(video)
           ) {
             videoCache[video.videoId] = 1; // add to cache
@@ -57,19 +66,40 @@ const handle = async ({ bot }) => {
           }
           db.ref(videoDBRes + "/processed/" + video.videoId).set(1);
     }
+  const isVideoInCache = (video, videoCache) => {
+    const check = video.videoId in videoCache;
+    if(check){
+      console.log(`Video ${video.videoId} is in Cache`);
+    }else{
+      console.log(`Video ${video.videoId} is not in Cache`);
+    }
+    return check;
+  }
      
   const isVideoYoung = video => {
-    return moment(video.publishedAt, "YYYY-MM-DDThh:mm:ss.sZ").isBetween(
-      moment().subtract(1, "hour"),
-      moment()
-    );
+    const check = 
+      moment(video.publishedAt, "YYYY-MM-DDThh:mm:ss.sZ")
+        .isBetween( moment().subtract(1, "hour"), moment());
+    if(check){
+      console.log(`Video ${video.videoId} is young.`);
+    }else{
+      console.log(`Video ${video.videoId} is not young.`);
+    }
+    return check;
+    
   };
   const isKoreanUnnie = video => {
-    return findKoreanUnnie(
+    const check = findKoreanUnnie(
       `${video.channelTitle} ${video.description} ${video.title} ${
         video.channelTitle
       }`
     );
+    if(check){
+      console.log(`Video ${video.videoId} has Korean Unnnie.`);
+    }else{
+      console.log(`Video ${video.videoId} does not have Korean Unnnie.`);
+    }
+    return check;
   };
 };
 

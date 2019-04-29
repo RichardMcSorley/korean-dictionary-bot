@@ -35,6 +35,13 @@ module.exports.getVideoInfoFromDB = async videoInfo => {
   });
 };
 
+module.exports.getProcessedVideos = async _ => {
+  const eventref = db.ref(`videos/processed`);
+  const snapshot = await eventref.once("value");
+  const value = snapshot.val();
+  return value;
+};
+
 module.exports.getPlaylistFromDB = async () => {
   const dbRef = await db.ref(`${videoPlaylistDBResource}/list`);
   const snapshot = await dbRef.once("value");
