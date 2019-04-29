@@ -8,6 +8,7 @@ const constants = require("../../utils/constants");
 const numeral = require("numeral");
 const mqlight = require('mqlight');
 const topic = 'new_youtube_video';
+const _ = require('lodash');
 
 const handle = async ({ bot }) => {
     try {
@@ -58,7 +59,7 @@ const handle = async ({ bot }) => {
             options.setURL(video.videoUrl);
             console.log("about to send to channel");
             await channel.send(
-              `**@everyone ${video.channelTitle}** ${verb} **${video.title}** at ${
+              `**@everyone ${video.channelTitle}** ${verb} **${_.unescape(video.title)}** at ${
                 video.videoUrl
               }`
             );
@@ -76,18 +77,6 @@ const handle = async ({ bot }) => {
     return check;
   }
      
-  const isVideoYoung = video => {
-    const check = 
-      moment(video.publishedAt, "YYYY-MM-DDThh:mm:ss.sZ")
-        .isBetween( moment().subtract(1, "hour"), moment());
-    if(check){
-      console.log(`Video ${video.videoId} is young.`);
-    }else{
-      console.log(`Video ${video.videoId} is not young.`);
-    }
-    return check;
-    
-  };
   const isKoreanUnnie = video => {
     const check = findKoreanUnnie(
       `${video.channelTitle} ${video.description} ${video.title} ${
