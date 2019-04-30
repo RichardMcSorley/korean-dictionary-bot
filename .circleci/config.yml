@@ -12,7 +12,7 @@ jobs:
           command: |
             echo $GCLOUD_SERVICE_KEY | base64 -d > /root/gcloud-service-key.json
             gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
-            gcloud container clusters get-credentials rose --zone us-central1-a --project dongdongchat
+            gcloud container clusters get-credentials rose2 --zone us-central1-a --project dongdongchat
             kubectl config set-context $(kubectl config current-context) --namespace=prod
       - run: 
           name: Setup Skaffold
