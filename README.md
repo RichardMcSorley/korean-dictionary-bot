@@ -1,4 +1,4 @@
-# Korean Dictionary Discord Bot
+# Korean Dictionary Discord Bot [![CircleCI](https://circleci.com/gh/RichardMcSorley/korean-dictionary-bot.svg?style=svg)](https://circleci.com/gh/RichardMcSorley/korean-dictionary-bot)
 
 Created for use in KoreanUnnie's discord [Youtube Channel Link](https://www.youtube.com/koreanunnie)
 
