@@ -1,11 +1,5 @@
-const hasKoreanTXT = string => {
-  const re = /([ㄱ-ㅎ]+)|([가-힣])*$/g;
-  return re.test(string);
-};
-const hasEnglishTXT = string => {
-  const re = /[A-Za-z]|[A-Za-z0-9]/g;
-  return re.test(string);
-};
+const hasKoreanTXT = string => /[\u3131-\uD79D]/ugi.test(string);
+const hasEnglishTXT = string => /[A-Za-z]|[A-Za-z0-9]/g.test(string);
 
 const langMap = {
   ko_en: "English",
