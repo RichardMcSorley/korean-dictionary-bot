@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: korean-dictionary-bot
-          image: gcr.io/dongdongchat/korean-dictionary-bot
+          image: gcr.io/jinjaio/korean-dictionary-bot
           env:
             - name: PORT
               value: "8080"
