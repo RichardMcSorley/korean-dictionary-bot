@@ -6,10 +6,15 @@ const mqlight = require('mqlight');
 const topic = 'ready_youtube_video';
 const _ = require('lodash');
 const moment = require('moment');
+const TimerQueue = require('../../utils/TimerQueue');
+const timer = new TimerQueue();
 
 const handle = async ({ bot }) => {
   try {
     videoCache = await getProcessedVideos();
+    if(!videoCache || videoCache === null){
+      videoCache = {};
+    }
     console.log(videoCache);
   } catch (error) {
     console.log(error);
@@ -20,7 +25,7 @@ const handle = async ({ bot }) => {
     rc.subscribe(topic);
     rc.on('message', function (video) {
       console.log('Recieved Video:', video.videoId);
-      runVideoLogic(video);
+      timer.addTask(()=>runVideoLogic(video), 5000);
     });
     rc.on("error", (err) => {
       console.log(err);
@@ -29,7 +34,7 @@ const handle = async ({ bot }) => {
   });
 
   const runVideoLogic = async (video) => {
-    if(!video.videoId in videoCache){
+    if(!videoCache.hasOwnProperty(video.videoId)){
       videoCache[video.videoId] = 1; // add to cache
       let verb = "uploaded";
       if (video.liveBroadcastContent === "live") {
@@ -38,14 +43,21 @@ const handle = async ({ bot }) => {
       if (video.liveBroadcastContent === "upcoming") {
         verb = "is about to go live";
       }
-      const channel = await bot.channels.get(discordChannel);
-      console.log(`about to send ${video.videoId} to channel`);
+      let channel;
+      try {
+        channel = await bot.channels.get(discordChannel);
+        console.log(`about to send ${video.videoId} to channel`);
+      } catch (error) {
+        console.log('ERROR',video.videoId, discordChannel, error)
+      }
       await channel.send(
         `**@everyone ${video.channelTitle}** ${verb} **${_.unescape(video.title)}** at ${
         video.videoUrl
         }`
       );
       db.ref(videoDBRes + "/processed/" + video.videoId).set(moment().toString());
+    }else{
+      console.log(`${video.videoId} is in the cache, won't post.`);
     }
   }
 }
@@ -55,3 +67,6 @@ module.exports = {
   handle
   //  queue
 };
+
+
+
