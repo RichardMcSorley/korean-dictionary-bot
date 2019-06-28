@@ -3,7 +3,7 @@ const koreanConjugator = Conjugator.create("korean");
 const { getFirstTextAnalyze } = require("../resources/word-analyzer");
 const { titleCase } = require("../utils/format-text");
 const _ = require("underscore");
-const handle = async ({ message, options, bot, prefix }) => {
+const handle = async ({ message, options, prefix }) => {
   const errorTxt = `\nExample: \`\`\`${
     module.exports.exampleUsage
   }\`\`\` \nResult: \`\`\`${module.exports.exampleResult}\`\`\``;

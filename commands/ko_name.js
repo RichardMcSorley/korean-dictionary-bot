@@ -3,7 +3,7 @@ const preString = "How about ";
 const sufString = " :smiley:";
 const kpop = require("kpop");
 const { titleCase } = require("../utils/format-text");
-const handle = ({ message, options, bot, prefix }) => {
+const handle = ({ message }) => {
   const errorTxt = `\nExample: \`\`\`${
     module.exports.exampleUsage
   }\`\`\` \nResult: \`\`\`${module.exports.exampleResult}\`\`\``;

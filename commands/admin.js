@@ -1,6 +1,6 @@
 const util = require("util");
 const { getData } = require("../routes/index");
-const handle = async ({ message, options, prefix, bot, db }) => {
+const handle = async ({ message, options, prefix, bot }) => {
   if (
     !message.member.roles.some(r =>
       ["Discord Manager", "한국언니"].includes(r.name)

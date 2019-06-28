@@ -4,7 +4,7 @@ const PNUurl = "http://speller.cs.pusan.ac.kr/";
 const DAUMurl = "http://dic.daum.net/grammar_checker.do";
 const { titleCase } = require("../utils/format-text");
 let results, fired, sent, globalOptions, globalMessage;
-const handle = ({ message, options, bot, prefix }) => {
+const handle = ({ message, options, prefix }) => {
   const errorTxt = `\nExample: \`\`\`${
     module.exports.exampleUsage
   }\`\`\` \nResult: \`\`\`${module.exports.exampleResult}\`\`\``;

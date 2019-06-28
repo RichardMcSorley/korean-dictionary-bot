@@ -2,7 +2,7 @@ const { numberToKorean } = require("number-to-korean");
 const kpop = require("kpop");
 const koreanToNumber = require("korean-numbers");
 var numeral = require("numeral");
-const handle = ({ message, options, bot, prefix }) => {
+const handle = ({ message, options, prefix }) => {
   const errorTxt = `\nExample: \`\`\`${
     module.exports.exampleUsage
   }\`\`\` \nResult: \`\`\`${module.exports.exampleResult}\`\`\``;

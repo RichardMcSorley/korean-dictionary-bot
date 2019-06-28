@@ -1,5 +1,5 @@
 const keyboard = require("gksdud");
-const handle = ({ message, options, bot, prefix }) => {
+const handle = ({ message, options, prefix }) => {
   const errorTxt = `\nExample: \`\`\`${
     module.exports.exampleUsage
   }\`\`\` \nResult: \`\`\`${module.exports.exampleResult}\`\`\``;
