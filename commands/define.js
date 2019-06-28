@@ -22,7 +22,7 @@ const handle = async ({ message, options, prefix, db, io }) => {
     message.channel.send(options);
     return;
   }
-  const translation = await naverAPI.getTerms(msg); // try to lookup in dictionary'
+  const translation = await naverAPI.getTranslation(msg); // try to lookup in dictionary'
   if (translation) {
     await db.sendTermToDB(msg);
     io.emit("newTerm");

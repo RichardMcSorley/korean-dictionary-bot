@@ -1,6 +1,6 @@
 const naverURL = "https://openapi.naver.com/v1/papago/n2mt";
 const fetch = require("node-fetch");
-const handle = async ({ message, options, bot, prefix }) => {
+const handle = async ({ message, options, prefix }) => {
   const errorTxt = `\nExample: \`\`\`${
     module.exports.exampleUsage
   }\`\`\` \nResult: \`\`\`${module.exports.exampleResult}\`\`\``;
