@@ -37,7 +37,7 @@
     "moment": "^2.22.2",
     "mqlight": "^2.0.2019041500",
     "muicss": "^0.9.41",
-    "next": "^7.0.2",
+    "next": "^11.1.3",
     "node-fetch": "^2.2.0",
     "node-gtts": "^2.0.2",
     "number-to-korean": "^1.0.0",
